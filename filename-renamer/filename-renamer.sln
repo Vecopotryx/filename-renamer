@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "filename-renamer", "filename-renamer\filename-renamer.csproj", "{8CC6AB2F-617C-4B93-946B-239E2C864D0E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CC6AB2F-617C-4B93-946B-239E2C864D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC6AB2F-617C-4B93-946B-239E2C864D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC6AB2F-617C-4B93-946B-239E2C864D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC6AB2F-617C-4B93-946B-239E2C864D0E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4511E16A-A9A7-46A9-B576-AE23215EC433}
+	EndGlobalSection
+EndGlobal
