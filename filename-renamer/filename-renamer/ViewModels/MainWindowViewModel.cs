@@ -1,11 +1,36 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reactive;
 using System.Text;
+using ReactiveUI;
 
-namespace filename_renamer.ViewModels
+namespace FilenameRenamer.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
+
     {
-        public string Greeting => "Welcome to Avalonia!";
+        // private FileHandler fileHandler = new FileHandler();
+
+        private string _newName  = "Default";
+
+        public string NewName
+        {
+            get => _newName;
+            set
+            {
+                _newName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NewName)));
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void RunTheThing()
+        {
+            // fileHandler.Thing();
+            // Console.WriteLine("Clicked");
+            NewName = "Pog";
+        }
     }
 }

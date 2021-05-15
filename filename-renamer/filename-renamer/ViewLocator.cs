@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using filename_renamer.ViewModels;
 using System;
+using FilenameRenamer.ViewModels;
 
-namespace filename_renamer
+namespace FilenameRenamer
 {
     public class ViewLocator : IDataTemplate
     {

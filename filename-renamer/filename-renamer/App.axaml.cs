@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using filename_renamer.ViewModels;
-using filename_renamer.Views;
+using FilenameRenamer.ViewModels;
+using FilenameRenamer.Views;
 
-namespace filename_renamer
+namespace FilenameRenamer
 {
     public class App : Application
     {

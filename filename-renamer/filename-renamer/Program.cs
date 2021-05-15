@@ -3,7 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using System;
 
-namespace filename_renamer
+namespace FilenameRenamer
 {
     class Program
     {

@@ -1,12 +1,12 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:filename_renamer.ViewModels"
+        xmlns:vm="using:FilenameRenamer.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="filename_renamer.Views.MainWindow"
+        x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="filename_renamer">
+        Title="Filename Renamer">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
@@ -44,7 +44,7 @@
 					<RowDefinition Height="1*" />
 					<RowDefinition Height="1*" />
 				</Grid.RowDefinitions>
-				<TextBox Grid.Row="0" Text="{Binding Greeting}"></TextBox>
+				<TextBox Grid.Row="0" Text="{Binding NewName}"></TextBox>
 				<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
 					<TextBlock>Insert:</TextBlock>
 					<Button>Last modified date</Button>
@@ -57,9 +57,9 @@
 				<CheckBox>Random checkbox 1</CheckBox>
 				<CheckBox>Random checkbox 2</CheckBox>
 				<CheckBox>Random checkbox 3</CheckBox>
-				<CheckBox>Copy files to new directory (keep old files and old names in current directory)</CheckBox>
-			</StackPanel>
-			<TextBlock Grid.Row="1" Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Command="{Binding RunTheThing}">Apply</Button>
+                <CheckBox>Copy files to new directory (keep old files and old names in current directory)</CheckBox>
+            </StackPanel>
 		</Grid>
 	</Grid>
 </Window>
