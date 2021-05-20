@@ -19,7 +19,9 @@ namespace FilenameRenamer.ViewModels
 
         private string _name = "no";
 
-        public string[] myItems = { "Test1", "Test2", "Test3", "Test4" };
+        public string[] myItems = Directory.GetFiles(@"c:\");
+
+            // { "Test1", "Test2", "Test3", "Test4" };
 
 
         public string[] MyItems

@@ -30,7 +30,7 @@
 			<ListBox Grid.Row="0" Items="{Binding MyItems}">
 				<ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="Red" CornerRadius="4" Padding="4">
+                        <Border Background="White" CornerRadius="4" Padding="4">
                             <TextBlock Text="{Binding}"/>
                         </Border>
                     </DataTemplate>
