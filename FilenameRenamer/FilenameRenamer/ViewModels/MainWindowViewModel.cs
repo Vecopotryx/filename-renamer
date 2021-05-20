@@ -60,5 +60,7 @@ namespace FilenameRenamer.ViewModels
         }*/
 
         public void RunTheThing() => Name = "Pog";
+        public void AddCurrentFilename() => Name += " $currentFilename$";
+        public void AddLastModifiedDate() => Name += " $lastModifiedDate$";
     }
 }
