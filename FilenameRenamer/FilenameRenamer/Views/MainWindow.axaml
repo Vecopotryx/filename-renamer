@@ -6,6 +6,9 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
+		Background="White"
+		TransparencyLevelHint="AcrylicBlur"
+		
         Title="Filename Renamer">
 
     <Design.DataContext>
@@ -15,7 +18,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="1*" />
 			<ColumnDefinition Width="2*" />
-		</Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*" />
 		</Grid.RowDefinitions>
@@ -24,7 +27,15 @@
 				<RowDefinition Height="10*"/>
 				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
-			<ListBox Grid.Row="0"></ListBox>
+			<ListBox Grid.Row="0" Items="{Binding MyItems}">
+				<ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="Red" CornerRadius="4" Padding="4">
+                            <TextBlock Text="{Binding}"/>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
 				<Button>+</Button>
 				<Button>Discard all</Button>
@@ -44,7 +55,7 @@
 					<RowDefinition Height="1*" />
 					<RowDefinition Height="1*" />
 				</Grid.RowDefinitions>
-				<TextBox Grid.Row="0" Text="{Binding NewName}"></TextBox>
+				<TextBox Grid.Row="0" Text="{Binding Name}"></TextBox>
 				<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
 					<TextBlock>Insert:</TextBlock>
 					<Button>Last modified date</Button>

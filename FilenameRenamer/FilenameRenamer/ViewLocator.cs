@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using System;
 using FilenameRenamer.ViewModels;
+using System;
 
 namespace FilenameRenamer
 {
