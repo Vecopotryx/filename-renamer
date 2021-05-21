@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using FilenameRenamer.Views;
 using ReactiveUI;
 
 namespace FilenameRenamer.ViewModels
@@ -19,12 +23,12 @@ namespace FilenameRenamer.ViewModels
 
         private string _name = "no";
 
-        public string[] myItems = Directory.GetFiles(@"c:\");
+        public List<string> myItems = Directory.GetFiles(@"C:\").ToList();
 
             // { "Test1", "Test2", "Test3", "Test4" };
 
 
-        public string[] MyItems
+        public List<string> MyItems
         {
             get => myItems;
             set
@@ -43,6 +47,26 @@ namespace FilenameRenamer.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
             }
         }
+
+        public async Task OpenFolder()
+        {
+            var dialog = new OpenFolderDialog();
+            var result = await dialog.ShowAsync(new MainWindow());
+
+            
+            /*if (result != null)
+            {
+                await OpenFold(result);
+            }
+            Trace.WriteLine("DIR IS: " + result);
+            */
+            MyItems.AddRange(Directory.GetFiles(@result).ToList());
+            Name += new FileInfo(Directory.GetFiles(result)[1]).LastWriteTime;
+            Name += result;
+        }
+
+
+
         /*
         public string NewName
         {
