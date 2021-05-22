@@ -68,7 +68,7 @@
 				<CheckBox>Random checkbox 1</CheckBox>
 				<CheckBox>Random checkbox 2</CheckBox>
 				<CheckBox>Random checkbox 3</CheckBox>
-                <Button Command="{Binding RunTheThing}">Apply</Button>
+                <Button Command="{Binding ExecuteRename}">Apply</Button>
                 <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory (keep old files and old names in current directory)</CheckBox>
 				<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
                     <TextBox></TextBox>

@@ -25,14 +25,46 @@ namespace FilenameRenamer.ViewModels
 
         private List<string> myItems = Directory.GetFiles(@"C:\").ToList();
 
-        // { "Test1", "Test2", "Test3", "Test4" };
-
-        static System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(@"C:\");
+        static System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(@"C:\Test");
         static System.IO.FileInfo[] fi = di.GetFiles();
 
         private void HandleRename(FileInfo inputFile, string newName)
         {
-            inputFile.MoveTo(@"C:\Test2\" + newName);
+            string localNewName = newName;
+            // Check if $currentName$ exists and if so replace it
+            if (Name.Contains("$currentName$"))
+            {
+                localNewName = localNewName.Replace("$currentName$",Path.GetFileNameWithoutExtension(inputFile.Name));
+            }
+            // Check if $lastModifiedDate$ exists and if so replace it
+            if (Name.Contains("$lastModifiedDate$"))
+            {
+                localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
+            }
+            System.Diagnostics.Debug.WriteLine(localNewName.Trim() + inputFile.Extension);
+            // inputFile.CopyTo(@"C:\Test2" + localNewName + inputFile.Extension);
+            /*if (CopyFilesOptionOn)
+            {
+                inputFile.CopyTo(@"C:\Test2\" + newName);
+            }
+            else
+            {
+                inputFile.MoveTo(@"C:\Test2\" + newName);
+            }*/
+        }
+
+        // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm.
+        // Maybe add option to change folder names?
+        public void ExecuteRename()
+        {
+            // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
+            foreach (var file in fi)
+            {
+                HandleRename(file, Name);
+                System.Diagnostics.Debug.WriteLine(file.Name);
+                System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
+                System.Diagnostics.Debug.WriteLine(file.Extension);
+            }
         }
 
         public List<string> MyItems
@@ -62,6 +94,7 @@ namespace FilenameRenamer.ViewModels
             get => _name;
             set
             {
+                // Maybe trim value for preview?
                 _name = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
             }
@@ -81,6 +114,7 @@ namespace FilenameRenamer.ViewModels
             */
             // MyItems.AddRange(Directory.GetFiles(@result).ToList());
 
+            /*
             Name += String.Join(",",Directory.GetFiles(@result));
 
             for (int thing = 0; thing < Directory.GetFiles(@result).Length; thing++)
@@ -92,10 +126,13 @@ namespace FilenameRenamer.ViewModels
                 System.Diagnostics.Debug.WriteLine(Directory.GetFiles(@result)[thing]);
 
             }
+            */
+             di = new System.IO.DirectoryInfo(@result);
+             fi = di.GetFiles();
 
-            System.Diagnostics.Debug.WriteLine(MyItems);
+            System.Diagnostics.Debug.WriteLine("Folder selected " + result);
 
-            Name += result;
+            // Name += result;
             
         }
 
@@ -129,7 +166,7 @@ namespace FilenameRenamer.ViewModels
                System.Diagnostics.Debug.WriteLine(file.Extension);
            }
        }
-        public void AddCurrentFilename() => Name += " $currentFilename$";
+       public void AddCurrentFilename() => Name += " $currentName$";
         public void AddLastModifiedDate() => Name += " $lastModifiedDate$";
     }
 }
