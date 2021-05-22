@@ -27,7 +27,7 @@
 				<RowDefinition Height="10*"/>
 				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
-			<ListBox Grid.Row="0" Items="{Binding MyItems}">
+			<ListBox Grid.Row="0" Items="{Binding GraphicalFileList}">
 				<ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Background="White" CornerRadius="4" Padding="4">
@@ -55,7 +55,7 @@
 					<RowDefinition Height="1*" />
 					<RowDefinition Height="1*" />
 				</Grid.RowDefinitions>
-				<TextBox Grid.Row="0" Text="{Binding Name}"></TextBox>
+				<TextBox Grid.Row="0" Text="{Binding NewName}"></TextBox>
 				<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
 					<TextBlock>Insert:</TextBlock>
 					<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
@@ -68,7 +68,7 @@
 				<CheckBox>Random checkbox 1</CheckBox>
 				<CheckBox>Random checkbox 2</CheckBox>
 				<CheckBox>Random checkbox 3</CheckBox>
-                <Button Command="{Binding ExecuteRename}">Apply</Button>
+                <Button Command="{Binding ApplyButtonClick}">Apply</Button>
                 <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory (keep old files and old names in current directory)</CheckBox>
 				<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
                     <TextBox></TextBox>

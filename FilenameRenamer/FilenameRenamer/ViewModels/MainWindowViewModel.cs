@@ -16,43 +16,32 @@ using ReactiveUI;
 namespace FilenameRenamer.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
-
     {
-        private FileHandler fileHandler = new FileHandler();
-        // private FileHandler fileHandler = new FileHandler();
-
-        // private string _newName  = "Default";
-
-        private string _name = "no";
-
-        private List<string> myItems = Directory.GetFiles(@"C:\").ToList();
-
-        static System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(@"C:\Test");
-        static System.IO.FileInfo[] fi = di.GetFiles();
-
-        
-
-        // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm.
+        // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm?
         // Maybe add option to change folder names?
-        public void ExecuteRename()
+
+        private FileHandler fileHandler = new FileHandler();
+
+        private string _newName = "";
+        public string NewName
         {
-            // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
-            foreach (var file in fi)
+            get => _newName;
+            set
             {
-                fileHandler.HandleRename(file, Name);
-                System.Diagnostics.Debug.WriteLine(file.Name);
-                System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
-                System.Diagnostics.Debug.WriteLine(file.Extension);
+                // Maybe trim value for preview?
+                _newName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NewName)));
             }
         }
 
-        public List<string> MyItems
+        private List<string> _graphicalFileList = new List<string>();
+        public List<string> GraphicalFileList
         {
-            get => myItems;
+            get => _graphicalFileList;
             set
             {
-                myItems = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyItems)));
+                _graphicalFileList = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GraphicalFileList)));
             }
         }
 
@@ -67,30 +56,12 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                // Maybe trim value for preview?
-                _name = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
-            }
-        }
-
         public async Task OpenFolder()
         {
             var dialog = new OpenFolderDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
             
-            /*if (result != null)
-            {
-                await OpenFold(result);
-            }
-            Trace.WriteLine("DIR IS: " + result);
-            */
             // MyItems.AddRange(Directory.GetFiles(@result).ToList());
 
             /*
@@ -106,28 +77,17 @@ namespace FilenameRenamer.ViewModels
 
             }
             */
-             di = new System.IO.DirectoryInfo(@result);
-             fi = di.GetFiles();
+            fileHandler.Files = new System.IO.DirectoryInfo(@result).GetFiles();
+
+            foreach (var file in new System.IO.DirectoryInfo(@result).GetFiles())
+            {
+                GraphicalFileList.Add(file.Name);
+            }
 
             System.Diagnostics.Debug.WriteLine("Folder selected " + result);
 
-            // Name += result;
-            
         }
 
-
-
-        /*
-        public string NewName
-        {
-            get => _newName;
-            set
-            {
-                _newName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NewName)));
-            }
-        }
-        */
         public event PropertyChangedEventHandler PropertyChanged;
 
         /*protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -135,17 +95,8 @@ namespace FilenameRenamer.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }*/
 
-       // public void RunTheThing() => Name = "Pog";
-       public void RunTheThing()
-       {
-           foreach (var file in fi)
-           {
-               System.Diagnostics.Debug.WriteLine(file.Name);
-               System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
-               System.Diagnostics.Debug.WriteLine(file.Extension);
-           }
-       }
-       public void AddCurrentFilename() => Name += " $currentName$";
-        public void AddLastModifiedDate() => Name += " $lastModifiedDate$";
+        public void ApplyButtonClick() => fileHandler.ExecuteRename(NewName);
+        public void AddCurrentFilename() => NewName += " $currentName$";
+        public void AddLastModifiedDate() => NewName += " $lastModifiedDate$";
     }
 }

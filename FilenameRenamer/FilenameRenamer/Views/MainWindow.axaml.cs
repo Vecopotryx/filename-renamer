@@ -10,7 +10,7 @@ namespace FilenameRenamer.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel() {Name = "Hello"};
+            DataContext = new MainWindowViewModel();
 
 #if DEBUG
             this.AttachDevTools();

@@ -9,10 +9,13 @@ namespace FilenameRenamer.Models
 {
     class FileHandler
     {
+        public System.IO.FileInfo[] Files { get; set; }
+
         public void HandleRename(FileInfo inputFile, string newName)
         {
             string localNewName = newName;
             // Check if $currentName$ exists and if so replace it
+            // Should probably be able to remove the if-statement
             if (newName.Contains("$currentName$"))
             {
                 localNewName = localNewName.Replace("$currentName$", Path.GetFileNameWithoutExtension(inputFile.Name));
@@ -32,6 +35,21 @@ namespace FilenameRenamer.Models
             {
                 inputFile.MoveTo(@"C:\Test2\" + newName);
             }*/
+        }
+        public void ExecuteRename(string newName)
+        {
+            // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
+            // Also show error if Files is null?
+            if (Files != null)
+            {
+                foreach (var file in Files)
+                {
+                    HandleRename(file, newName);
+                    System.Diagnostics.Debug.WriteLine(file.Name);
+                    System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
+                    System.Diagnostics.Debug.WriteLine(file.Extension);
+                }
+            }
         }
     }
 }
