@@ -10,8 +10,6 @@ namespace FilenameRenamer.Models
 {
     class FileHandler
     {
-        public System.IO.FileInfo[] Files { get; set; }
-
         public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new ObservableCollection<DirectoryItem>();
 
         public void HandleRename(FileInfo inputFile, string newName)
@@ -42,12 +40,15 @@ namespace FilenameRenamer.Models
         public void ExecuteRename(string newName)
         {
             // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
-            // Also show error if Files is null?
-            if (Files != null)
+            // Also show error if FileInfos is null?
+            foreach (var directory in DirectoryItems)
             {
-                foreach (var file in Files)
+                if (directory.FileInfos != null)
                 {
-                    HandleRename(file, newName);
+                    foreach (var file in directory.FileInfos)
+                    {
+                        HandleRename(file, newName);
+                    }
                 }
             }
         }
@@ -61,6 +62,29 @@ namespace FilenameRenamer.Models
                 DirectoryName = directoryInfo.Name,
                 FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles()))
             });
+        }
+
+        public void AddSingleFileToDirectoryItems(FileInfo file)
+        {
+            bool directoryAlreadyExists = false;
+            foreach (var directoryItem in DirectoryItems)
+            {
+                if (directoryItem.DirectoryName == file.Directory.Name)
+                {
+                    directoryItem.FileInfos.Add(file);
+                    directoryAlreadyExists = true;
+                    break;
+                }
+            }
+
+            if (!directoryAlreadyExists)
+            {
+                DirectoryItems.Add(new DirectoryItem
+                {
+                    DirectoryName = file.Directory.Name,
+                    FileInfos = new ObservableCollection<FileInfo>() { file }
+            });
+            }
         }
     }
 }

@@ -24,9 +24,6 @@ namespace FilenameRenamer.ViewModels
 
         private FileHandler fileHandler = new FileHandler();
 
-
-        // public readonly ObservableCollection<DirectoryItem> GraphicalFileList = new ObservableCollection<DirectoryItem>();
-
         public ObservableCollection<DirectoryItem> GraphicalFileList
         {
             get => fileHandler.DirectoryItems;
@@ -92,24 +89,24 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFileDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            foreach (var file in result)
-            {
-                //GraphicalFileList.Add(Path.GetFileName(file));
-            }
+            var resultFile = new FileInfo(result[0]);
+
+            fileHandler.AddSingleFileToDirectoryItems(resultFile);
         }
 
         public void DiscardFile()
         {
             // Need to remove it from actual FileList, not just graphical.
-            System.Diagnostics.Debug.WriteLine("Removed " + _selectedFile + " from list");
+            // System.Diagnostics.Debug.WriteLine("Removed " + _selectedFile + " from list");
             // GraphicalFileList.Remove(_selectedFile);
+            // I've had problems getting SelectedFile to work effeciently. 
+            throw new NotImplementedException();
         }
 
         public void DiscardAll()
         {
             // Should the application prompt user first perhaps?
-            GraphicalFileList.Clear();
-            Array.Clear(fileHandler.Files,0, fileHandler.Files.Length);
+            fileHandler.DirectoryItems.Clear();
         } 
 
 
