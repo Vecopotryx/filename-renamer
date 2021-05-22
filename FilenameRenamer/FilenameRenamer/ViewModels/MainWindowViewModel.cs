@@ -25,8 +25,15 @@ namespace FilenameRenamer.ViewModels
 
         private List<string> myItems = Directory.GetFiles(@"C:\").ToList();
 
-            // { "Test1", "Test2", "Test3", "Test4" };
+        // { "Test1", "Test2", "Test3", "Test4" };
 
+        static System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(@"C:\");
+        static System.IO.FileInfo[] fi = di.GetFiles();
+
+        private void HandleRename(FileInfo inputFile, string newName)
+        {
+            inputFile.MoveTo(@"C:\Test2\" + newName);
+        }
 
         public List<string> MyItems
         {
@@ -112,7 +119,16 @@ namespace FilenameRenamer.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }*/
 
-        public void RunTheThing() => Name = "Pog";
+       // public void RunTheThing() => Name = "Pog";
+       public void RunTheThing()
+       {
+           foreach (var file in fi)
+           {
+               System.Diagnostics.Debug.WriteLine(file.Name);
+               System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
+               System.Diagnostics.Debug.WriteLine(file.Extension);
+           }
+       }
         public void AddCurrentFilename() => Name += " $currentFilename$";
         public void AddLastModifiedDate() => Name += " $lastModifiedDate$";
     }
