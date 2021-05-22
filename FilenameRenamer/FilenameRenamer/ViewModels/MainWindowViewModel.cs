@@ -23,7 +23,7 @@ namespace FilenameRenamer.ViewModels
 
         private string _name = "no";
 
-        public List<string> myItems = Directory.GetFiles(@"C:\").ToList();
+        private List<string> myItems = Directory.GetFiles(@"C:\").ToList();
 
             // { "Test1", "Test2", "Test3", "Test4" };
 
@@ -60,9 +60,24 @@ namespace FilenameRenamer.ViewModels
             }
             Trace.WriteLine("DIR IS: " + result);
             */
-            MyItems.AddRange(Directory.GetFiles(@result).ToList());
-            Name += new FileInfo(Directory.GetFiles(result)[1]).LastWriteTime;
+            // MyItems.AddRange(Directory.GetFiles(@result).ToList());
+
+            Name += String.Join(",",Directory.GetFiles(@result));
+
+            for (int thing = 0; thing < Directory.GetFiles(@result).Length; thing++)
+            {
+                // MyItems.Append(new FileInfo(Directory.GetFiles(result)[thing]).LastWriteTime.ToString());
+                // Name += MyItems.ToString();
+                MyItems.Add(Directory.GetFiles(@result)[thing]);
+                // Console.WriteLine(MyItems);
+                System.Diagnostics.Debug.WriteLine(Directory.GetFiles(@result)[thing]);
+
+            }
+
+            System.Diagnostics.Debug.WriteLine(MyItems);
+
             Name += result;
+            
         }
 
 
