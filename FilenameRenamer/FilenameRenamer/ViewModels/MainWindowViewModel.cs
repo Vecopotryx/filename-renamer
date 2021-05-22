@@ -24,6 +24,24 @@ namespace FilenameRenamer.ViewModels
 
         private FileHandler fileHandler = new FileHandler();
 
+
+        // public readonly ObservableCollection<DirectoryItem> GraphicalFileList = new ObservableCollection<DirectoryItem>();
+
+        public ObservableCollection<DirectoryItem> GraphicalFileList
+        {
+            get => fileHandler.DirectoryItems;
+            set
+            {
+                fileHandler.DirectoryItems = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GraphicalFileList)));
+            }
+        }
+
+        public MainWindowViewModel()
+        {
+            this.GraphicalFileList = fileHandler.DirectoryItems;
+        }
+
         private string _newName = "$currentName$";
         public string NewName
         {
@@ -36,16 +54,6 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-        private ObservableCollection<DirectoryItem> _graphicalFileList = new ObservableCollection<DirectoryItem>();
-        public ObservableCollection<DirectoryItem> GraphicalFileList
-        {
-            get => _graphicalFileList;
-            set
-            {
-                _graphicalFileList = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GraphicalFileList)));
-            }
-        }
 
         private bool _copyFilesOptionOn = false;
         public bool CopyFilesOptionOn
@@ -64,8 +72,6 @@ namespace FilenameRenamer.ViewModels
             var result = await dialog.ShowAsync(new MainWindow());
 
             fileHandler.AddNewDirectoryItem(new System.IO.DirectoryInfo(@result));
-
-            GraphicalFileList = fileHandler.DirectoryItems;
 
             System.Diagnostics.Debug.WriteLine("Folder selected " + result);
         }
@@ -88,7 +94,7 @@ namespace FilenameRenamer.ViewModels
 
             foreach (var file in result)
             {
-                GraphicalFileList.Add(Path.GetFileName(file));
+                //GraphicalFileList.Add(Path.GetFileName(file));
             }
         }
 
@@ -96,7 +102,7 @@ namespace FilenameRenamer.ViewModels
         {
             // Need to remove it from actual FileList, not just graphical.
             System.Diagnostics.Debug.WriteLine("Removed " + _selectedFile + " from list");
-            GraphicalFileList.Remove(_selectedFile);
+            // GraphicalFileList.Remove(_selectedFile);
         }
 
         public void DiscardAll()

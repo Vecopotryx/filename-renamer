@@ -3,6 +3,8 @@
         xmlns:vm="using:FilenameRenamer.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:FilenameRenamer.Models"
+        xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -24,14 +26,15 @@
 				<RowDefinition Height="10*"/>
 				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
-			<TreeView Grid.Row="0" SelectedItem="{Binding SelectedFile}" Items="{Binding GraphicalFileList}">
-				<TreeView.ItemTemplate>
-                    <TreeDataTemplate ItemsSource="{Binding GraphicalFileList}">
-                        <Border Background="White" CornerRadius="4" Padding="4">
-                            <TextBlock Text="{Binding}"/>
-                        </Border>
+			<TreeView Grid.Row="0" Items="{Binding GraphicalFileList}">
+				<TreeView.DataTemplates>
+                    <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
+                        <TextBlock Text="{Binding DirectoryName}"></TextBlock>
                     </TreeDataTemplate>
-                </TreeView.ItemTemplate>
+					<DataTemplate DataType="io:FileInfo">
+						<TextBlock Text="{Binding Name}"></TextBlock>
+					</DataTemplate>
+                </TreeView.DataTemplates>
             </TreeView>
 			<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
 				<Button Command="{Binding SelectFile}">+</Button>

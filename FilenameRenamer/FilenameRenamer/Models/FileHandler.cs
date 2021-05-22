@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace FilenameRenamer.Models
     {
         public System.IO.FileInfo[] Files { get; set; }
 
-        public List<DirectoryItem> DirectoryItems { get; set; } = new List<DirectoryItem>();
+        public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new ObservableCollection<DirectoryItem>();
 
         public void HandleRename(FileInfo inputFile, string newName)
         {
@@ -58,7 +59,7 @@ namespace FilenameRenamer.Models
             DirectoryItems.Add(new DirectoryItem
             {
                 DirectoryName = directoryInfo.Name,
-                FileInfos = new List<FileInfo>(directoryInfo.GetFiles())
+                FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles()))
             });
         }
     }
