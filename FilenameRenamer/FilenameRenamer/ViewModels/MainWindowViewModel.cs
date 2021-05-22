@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using DynamicData;
 using FilenameRenamer.Views;
 using FilenameRenamer.Models;
 using ReactiveUI;
@@ -86,8 +87,44 @@ namespace FilenameRenamer.ViewModels
             }
 
             System.Diagnostics.Debug.WriteLine("Folder selected " + result);
-
         }
+
+        private string _selectedFile;
+        public string SelectedFile
+        {
+            get => _selectedFile;
+            set
+            {
+                _selectedFile = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
+            }
+        }
+
+        public async Task SelectFile()
+        {
+            var dialog = new OpenFileDialog();
+            var result = await dialog.ShowAsync(new MainWindow());
+
+            foreach (var file in result)
+            {
+                GraphicalFileList.Add(Path.GetFileName(file));
+            }
+        }
+
+        public void DiscardFile()
+        {
+            // Need to remove it from actual FileList, not just graphical.
+            System.Diagnostics.Debug.WriteLine("Removed " + _selectedFile + " from list");
+            GraphicalFileList.Remove(_selectedFile);
+        }
+
+        public void DiscardAll()
+        {
+            // Should the application prompt user first perhaps?
+            GraphicalFileList.Clear();
+            Array.Clear(fileHandler.Files,0, fileHandler.Files.Length);
+        } 
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
