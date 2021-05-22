@@ -25,7 +25,7 @@ namespace FilenameRenamer.Models
             {
                 localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
             }
-            System.Diagnostics.Debug.WriteLine(localNewName.Trim() + inputFile.Extension);
+            System.Diagnostics.Debug.WriteLine("{0} would have been renamed to {1}", inputFile.Name, localNewName.Trim() + inputFile.Extension);
             // inputFile.CopyTo(@"C:\Test2" + localNewName + inputFile.Extension);
             /*if (CopyFilesOptionOn)
             {
@@ -45,9 +45,6 @@ namespace FilenameRenamer.Models
                 foreach (var file in Files)
                 {
                     HandleRename(file, newName);
-                    System.Diagnostics.Debug.WriteLine(file.Name);
-                    System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
-                    System.Diagnostics.Debug.WriteLine(file.Extension);
                 }
             }
         }

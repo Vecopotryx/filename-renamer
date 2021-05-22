@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -34,8 +35,8 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-        private List<string> _graphicalFileList = new List<string>();
-        public List<string> GraphicalFileList
+        private ObservableCollection<string> _graphicalFileList = new ObservableCollection<string>();
+        public ObservableCollection<string> GraphicalFileList
         {
             get => _graphicalFileList;
             set
