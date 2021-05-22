@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using FilenameRenamer.Views;
+using FilenameRenamer.Models;
 using ReactiveUI;
 
 namespace FilenameRenamer.ViewModels
@@ -17,6 +18,7 @@ namespace FilenameRenamer.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
 
     {
+        private FileHandler fileHandler = new FileHandler();
         // private FileHandler fileHandler = new FileHandler();
 
         // private string _newName  = "Default";
@@ -28,30 +30,7 @@ namespace FilenameRenamer.ViewModels
         static System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(@"C:\Test");
         static System.IO.FileInfo[] fi = di.GetFiles();
 
-        private void HandleRename(FileInfo inputFile, string newName)
-        {
-            string localNewName = newName;
-            // Check if $currentName$ exists and if so replace it
-            if (Name.Contains("$currentName$"))
-            {
-                localNewName = localNewName.Replace("$currentName$",Path.GetFileNameWithoutExtension(inputFile.Name));
-            }
-            // Check if $lastModifiedDate$ exists and if so replace it
-            if (Name.Contains("$lastModifiedDate$"))
-            {
-                localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
-            }
-            System.Diagnostics.Debug.WriteLine(localNewName.Trim() + inputFile.Extension);
-            // inputFile.CopyTo(@"C:\Test2" + localNewName + inputFile.Extension);
-            /*if (CopyFilesOptionOn)
-            {
-                inputFile.CopyTo(@"C:\Test2\" + newName);
-            }
-            else
-            {
-                inputFile.MoveTo(@"C:\Test2\" + newName);
-            }*/
-        }
+        
 
         // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm.
         // Maybe add option to change folder names?
@@ -60,7 +39,7 @@ namespace FilenameRenamer.ViewModels
             // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
             foreach (var file in fi)
             {
-                HandleRename(file, Name);
+                fileHandler.HandleRename(file, Name);
                 System.Diagnostics.Debug.WriteLine(file.Name);
                 System.Diagnostics.Debug.WriteLine(Path.GetFileNameWithoutExtension(file.Name));
                 System.Diagnostics.Debug.WriteLine(file.Extension);
