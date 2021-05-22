@@ -11,6 +11,8 @@ namespace FilenameRenamer.Models
     {
         public System.IO.FileInfo[] Files { get; set; }
 
+        public List<DirectoryItem> DirectoryItems { get; set; } = new List<DirectoryItem>();
+
         public void HandleRename(FileInfo inputFile, string newName)
         {
             string localNewName = newName;
@@ -47,6 +49,17 @@ namespace FilenameRenamer.Models
                     HandleRename(file, newName);
                 }
             }
+        }
+
+        public void AddNewDirectoryItem(DirectoryInfo directoryInfo)
+        {
+            System.Diagnostics.Debug.WriteLine(directoryInfo.Name);
+            
+            DirectoryItems.Add(new DirectoryItem
+            {
+                DirectoryName = directoryInfo.Name,
+                FileInfos = new List<FileInfo>(directoryInfo.GetFiles())
+            });
         }
     }
 }

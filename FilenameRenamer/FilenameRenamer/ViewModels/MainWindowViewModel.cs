@@ -24,7 +24,7 @@ namespace FilenameRenamer.ViewModels
 
         private FileHandler fileHandler = new FileHandler();
 
-        private string _newName = "";
+        private string _newName = "$currentName$";
         public string NewName
         {
             get => _newName;
@@ -36,8 +36,8 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-        private ObservableCollection<string> _graphicalFileList = new ObservableCollection<string>();
-        public ObservableCollection<string> GraphicalFileList
+        private ObservableCollection<DirectoryItem> _graphicalFileList = new ObservableCollection<DirectoryItem>();
+        public ObservableCollection<DirectoryItem> GraphicalFileList
         {
             get => _graphicalFileList;
             set
@@ -63,28 +63,9 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFolderDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            
-            // MyItems.AddRange(Directory.GetFiles(@result).ToList());
+            fileHandler.AddNewDirectoryItem(new System.IO.DirectoryInfo(@result));
 
-            /*
-            Name += String.Join(",",Directory.GetFiles(@result));
-
-            for (int thing = 0; thing < Directory.GetFiles(@result).Length; thing++)
-            {
-                // MyItems.Append(new FileInfo(Directory.GetFiles(result)[thing]).LastWriteTime.ToString());
-                // Name += MyItems.ToString();
-                MyItems.Add(Directory.GetFiles(@result)[thing]);
-                // Console.WriteLine(MyItems);
-                System.Diagnostics.Debug.WriteLine(Directory.GetFiles(@result)[thing]);
-
-            }
-            */
-            fileHandler.Files = new System.IO.DirectoryInfo(@result).GetFiles();
-
-            foreach (var file in new System.IO.DirectoryInfo(@result).GetFiles())
-            {
-                GraphicalFileList.Add(file.Name);
-            }
+            GraphicalFileList = fileHandler.DirectoryItems;
 
             System.Diagnostics.Debug.WriteLine("Folder selected " + result);
         }
@@ -127,6 +108,7 @@ namespace FilenameRenamer.ViewModels
 
 
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         /*protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
