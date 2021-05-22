@@ -69,7 +69,11 @@
 				<CheckBox>Random checkbox 2</CheckBox>
 				<CheckBox>Random checkbox 3</CheckBox>
                 <Button Command="{Binding RunTheThing}">Apply</Button>
-                <CheckBox>Copy files to new directory (keep old files and old names in current directory)</CheckBox>
+                <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory (keep old files and old names in current directory)</CheckBox>
+				<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
+                    <TextBox></TextBox>
+					<Button>Select folder</Button>
+                </StackPanel>
             </StackPanel>
 		</Grid>
 	</Grid>

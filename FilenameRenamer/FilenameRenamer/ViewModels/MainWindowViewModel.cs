@@ -38,6 +38,18 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
+        private bool _copyFilesOptionOn = false;
+        public bool CopyFilesOptionOn
+        {
+            get => _copyFilesOptionOn;
+            set
+            {
+                _copyFilesOptionOn = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CopyFilesOptionOn)));
+            }
+        }
+
+
         public string Name
         {
             get => _name;
