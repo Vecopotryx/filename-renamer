@@ -17,61 +17,17 @@ namespace FilenameRenamer.Models
 
         // Set should be private, just not sure how to get it to update in MainWindow.
 
-        private string _currentProgress = "";
-        public string CurrentProgress
+        private bool _currentlyWorking = false;
+        public bool CurrentlyWorking
         {
-            get => _currentProgress;
+            get => _currentlyWorking;
             set
             {
-                _currentProgress = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentProgress)));
+                _currentlyWorking = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentlyWorking)));
             }
         }
 
-        public void HandleRename(FileInfo inputFile, string newName)
-        {
-            string localNewName = newName;
-            // Check if $currentName$ exists and if so replace it
-            // Should probably be able to remove the if-statement
-            if (newName.Contains("$currentName$"))
-            {
-                localNewName = localNewName.Replace("$currentName$", Path.GetFileNameWithoutExtension(inputFile.Name));
-            }
-            // Check if $lastModifiedDate$ exists and if so replace it
-            if (newName.Contains("$lastModifiedDate$"))
-            {
-                localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
-            }
-            // System.Diagnostics.Debug.WriteLine("{0} would have been renamed to {1}", inputFile.Name, localNewName.Trim() + inputFile.Extension);
-            CurrentProgress = inputFile.Name + " would have been renamed to " + localNewName.Trim() +
-                              inputFile.Extension;
-            System.Diagnostics.Debug.WriteLine(CurrentProgress);
-            // inputFile.CopyTo(@"C:\Test2" + localNewName + inputFile.Extension);
-            /*if (CopyFilesOptionOn)
-            {
-                inputFile.CopyTo(@"C:\Test2\" + newName);
-            }
-            else
-            {
-                inputFile.MoveTo(@"C:\Test2\" + newName);
-            }*/
-        }
-
-        public async Task ExecuteRename(string newName)
-        {
-            // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
-            // Also show error if FileInfos is null?
-            foreach (var directory in DirectoryItems)
-            {
-                if (directory.FileInfos != null)
-                {
-                    foreach (var file in directory.FileInfos)
-                    {
-                        HandleRename(file, newName);
-                    }
-                }
-            }
-        }
 
         public void AddNewDirectoryItem(DirectoryInfo directoryInfo)
         {

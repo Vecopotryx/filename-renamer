@@ -110,8 +110,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding CurrentProgress}"></TextBlock>
-                    <ProgressBar IsIndeterminate="True" IsVisible="{Binding }"></ProgressBar>
+                    <ProgressBar IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
                     <Button Grid.Column="1"
                             HorizontalAlignment="Right"
                             Command="{Binding ApplyButtonClick}">

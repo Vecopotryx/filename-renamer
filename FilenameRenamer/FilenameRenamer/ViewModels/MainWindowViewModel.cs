@@ -13,6 +13,7 @@ using Avalonia.Controls;
 using DynamicData;
 using FilenameRenamer.Views;
 using FilenameRenamer.Models;
+using FilenameRenamer.Services;
 using ReactiveUI;
 
 namespace FilenameRenamer.ViewModels
@@ -23,6 +24,7 @@ namespace FilenameRenamer.ViewModels
         // Maybe add option to change folder names?
 
         private FileHandler fileHandler = new FileHandler();
+        private RenameService renameService = new RenameService(); 
 
         public ObservableCollection<DirectoryItem> GraphicalFileList
         {
@@ -85,6 +87,15 @@ namespace FilenameRenamer.ViewModels
         }
 
         
+        public bool CurrentlyWorking
+        {
+            get => fileHandler.CurrentlyWorking;
+            set
+            {
+                fileHandler.CurrentlyWorking = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentlyWorking)));
+            }
+        }
 
         public async Task SelectFile()
         {
@@ -109,8 +120,8 @@ namespace FilenameRenamer.ViewModels
         {
             // Should the application prompt user first perhaps?
             fileHandler.DirectoryItems.Clear();
-        } 
-
+        }
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -121,10 +132,17 @@ namespace FilenameRenamer.ViewModels
         }*/
 
 
-        public void ApplyButtonClick() => Task.Run(() => { fileHandler.ExecuteRename(NewName);});
+        public void ApplyButtonClick() => Task.Run(async () =>
+        {
+            CurrentlyWorking = true;
+            await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems);
+            CurrentlyWorking = false;
+        });
         public void AddCurrentFilename() => NewName += " $currentName$";
         public void AddLastModifiedDate() => NewName += " $lastModifiedDate$";
-        public void ClearNewName() => NewName = "";
+
+        public void ClearNewName() => System.Diagnostics.Debug.WriteLine(CurrentlyWorking);
+        // NewName = "";
 
     }
 }
