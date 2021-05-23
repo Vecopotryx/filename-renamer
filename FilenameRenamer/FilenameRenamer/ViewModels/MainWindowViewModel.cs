@@ -84,7 +84,7 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-
+        
 
         public async Task SelectFile()
         {
@@ -120,7 +120,8 @@ namespace FilenameRenamer.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }*/
 
-        public void ApplyButtonClick() => fileHandler.ExecuteRename(NewName);
+
+        public void ApplyButtonClick() => Task.Run(() => { fileHandler.ExecuteRename(NewName);});
         public void AddCurrentFilename() => NewName += " $currentName$";
         public void AddLastModifiedDate() => NewName += " $lastModifiedDate$";
         public void ClearNewName() => NewName = "";
