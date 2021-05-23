@@ -84,6 +84,8 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
+
+
         public async Task SelectFile()
         {
             var dialog = new OpenFileDialog();
@@ -121,5 +123,7 @@ namespace FilenameRenamer.ViewModels
         public void ApplyButtonClick() => fileHandler.ExecuteRename(NewName);
         public void AddCurrentFilename() => NewName += " $currentName$";
         public void AddLastModifiedDate() => NewName += " $lastModifiedDate$";
+        public void ClearNewName() => NewName = "";
+
     }
 }
