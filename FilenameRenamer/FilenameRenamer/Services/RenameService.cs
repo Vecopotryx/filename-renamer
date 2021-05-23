@@ -10,7 +10,7 @@ namespace FilenameRenamer.Services
 {
     class RenameService
     {
-        public async Task ExecuteRename(string newName, IEnumerable<DirectoryItem> directoryItems)
+        public async Task ExecuteRename(string newName, IEnumerable<DirectoryItem> directoryItems, string path, bool useCustomPath)
         {
             // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
             // Also show error if FileInfos is null?
@@ -20,35 +20,41 @@ namespace FilenameRenamer.Services
                 {
                     foreach (var file in directory.FileInfos)
                     {
-                        HandleRename(file, newName);
+                        HandleRename(file, newName, path, useCustomPath);
                     }
                 }
             }
-            //CurrentlyWorking = false;
         }
 
-        public void HandleRename(FileInfo inputFile, string newName)
+        public void HandleRename(FileInfo inputFile, string newName, string path, bool useCustomPath)
         {
             string localNewName = newName;
             // Check if $currentName$ exists and if so replace it
-            // Should probably be able to remove the if-statement
-
-                localNewName = localNewName.Replace("$currentName$", Path.GetFileNameWithoutExtension(inputFile.Name));
-            
+            localNewName = localNewName.Replace("$currentName$", Path.GetFileNameWithoutExtension(inputFile.Name));
             // Check if $lastModifiedDate$ exists and if so replace it
-     
-                localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
-            
-            System.Diagnostics.Debug.WriteLine("{0} would have been renamed to {1}", inputFile.Name, localNewName.Trim() + inputFile.Extension);
-            // inputFile.CopyTo(@"C:\Test2" + localNewName + inputFile.Extension);
-            /*if (CopyFilesOptionOn)
+            localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
+
+            try
             {
-                inputFile.CopyTo(@"C:\Test2\" + newName);
+                if (useCustomPath)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(@path);
+                    }
+                    System.Diagnostics.Debug.WriteLine(@path + "\\" + localNewName + inputFile.Extension);
+                    inputFile.CopyTo(@path + "\\" + localNewName + inputFile.Extension);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine(@inputFile.DirectoryName + "\\" + localNewName + inputFile.Extension);
+                    inputFile.MoveTo(@inputFile.DirectoryName + "\\" + localNewName + inputFile.Extension);
+                }
             }
-            else
+            catch(Exception e)
             {
-                inputFile.MoveTo(@"C:\Test2\" + newName);
-            }*/
+                System.Diagnostics.Debug.WriteLine("Some error occurred " + e.Message);
+            }
         }
     }
 }

@@ -92,6 +92,26 @@ namespace FilenameRenamer.ViewModels
             System.Diagnostics.Debug.WriteLine("Folder selected " + result);
         }
 
+        private string _customPath = "";
+        public string CustomPath
+        {
+            get => _customPath;
+            set
+            {
+                _customPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public async Task SelectCopyFolder()
+        {
+            var dialog = new OpenFolderDialog();
+            var result = await dialog.ShowAsync(new MainWindow());
+
+            CustomPath = result;
+        }
+
         public async Task SelectFile()
         {
             var dialog = new OpenFileDialog();
@@ -119,7 +139,7 @@ namespace FilenameRenamer.ViewModels
         public void ApplyButtonClick() => Task.Run(async () =>
         {
             CurrentlyWorking = true;
-            await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems);
+            await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems, CustomPath, CopyFilesOptionOn);
             CurrentlyWorking = false;
         });
 

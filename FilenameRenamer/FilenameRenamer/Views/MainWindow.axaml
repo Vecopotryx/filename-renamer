@@ -101,8 +101,8 @@
 				<CheckBox>Find and replace</CheckBox>
                 <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory (keep old files and old names in current directory)</CheckBox>
 				<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
-                    <TextBox></TextBox>
-					<Button>Select folder</Button>
+                    <TextBox IsReadOnly="True" Text="{Binding CustomPath}"></TextBox>
+					<Button Command="{Binding SelectCopyFolder}">Select folder</Button>
                 </StackPanel>
             </StackPanel>
 				<Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.Row="1">
