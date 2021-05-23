@@ -32,15 +32,13 @@ namespace FilenameRenamer.Services
             string localNewName = newName;
             // Check if $currentName$ exists and if so replace it
             // Should probably be able to remove the if-statement
-            if (newName.Contains("$currentName$"))
-            {
+
                 localNewName = localNewName.Replace("$currentName$", Path.GetFileNameWithoutExtension(inputFile.Name));
-            }
+            
             // Check if $lastModifiedDate$ exists and if so replace it
-            if (newName.Contains("$lastModifiedDate$"))
-            {
+     
                 localNewName = localNewName.Replace("$lastModifiedDate$", Path.GetFileNameWithoutExtension(inputFile.LastWriteTime.ToShortDateString()));
-            }
+            
             System.Diagnostics.Debug.WriteLine("{0} would have been renamed to {1}", inputFile.Name, localNewName.Trim() + inputFile.Extension);
             // inputFile.CopyTo(@"C:\Test2" + localNewName + inputFile.Extension);
             /*if (CopyFilesOptionOn)

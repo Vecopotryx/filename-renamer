@@ -32,13 +32,8 @@ namespace FilenameRenamer.ViewModels
             set
             {
                 fileHandler.DirectoryItems = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GraphicalFileList)));
+                OnPropertyChanged();
             }
-        }
-
-        public MainWindowViewModel()
-        {
-            this.GraphicalFileList = fileHandler.DirectoryItems;
         }
 
         private string _newName = "$currentName$";
@@ -49,7 +44,7 @@ namespace FilenameRenamer.ViewModels
             {
                 // Maybe trim value for preview?
                 _newName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NewName)));
+                OnPropertyChanged();
             }
         }
 
@@ -61,7 +56,29 @@ namespace FilenameRenamer.ViewModels
             set
             {
                 _copyFilesOptionOn = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CopyFilesOptionOn)));
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedFile;
+        public string SelectedFile
+        {
+            get => _selectedFile;
+            set
+            {
+                _selectedFile = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _currentlyWorking;
+        public bool CurrentlyWorking
+        {
+            get => _currentlyWorking;
+            set
+            {
+                _currentlyWorking = value;
+                OnPropertyChanged();
             }
         }
 
@@ -75,28 +92,6 @@ namespace FilenameRenamer.ViewModels
             System.Diagnostics.Debug.WriteLine("Folder selected " + result);
         }
 
-        private string _selectedFile;
-        public string SelectedFile
-        {
-            get => _selectedFile;
-            set
-            {
-                _selectedFile = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
-            }
-        }
-
-        
-        public bool CurrentlyWorking
-        {
-            get => fileHandler.CurrentlyWorking;
-            set
-            {
-                fileHandler.CurrentlyWorking = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentlyWorking)));
-            }
-        }
-
         public async Task SelectFile()
         {
             var dialog = new OpenFileDialog();
@@ -107,14 +102,7 @@ namespace FilenameRenamer.ViewModels
             fileHandler.AddSingleFileToDirectoryItems(resultFile);
         }
 
-        public void DiscardFile()
-        {
-            // Need to remove it from actual FileList, not just graphical.
-            // System.Diagnostics.Debug.WriteLine("Removed " + _selectedFile + " from list");
-            // GraphicalFileList.Remove(_selectedFile);
-            // I've had problems getting SelectedFile to work effeciently. 
-            throw new NotImplementedException();
-        }
+        public void DiscardFile() => fileHandler.RemoveFileFromList(new FileInfo(_selectedFile));
 
         public void DiscardAll()
         {
@@ -122,15 +110,11 @@ namespace FilenameRenamer.ViewModels
             fileHandler.DirectoryItems.Clear();
         }
         
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-
-        /*protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }*/
-
+        }
 
         public void ApplyButtonClick() => Task.Run(async () =>
         {
@@ -138,11 +122,9 @@ namespace FilenameRenamer.ViewModels
             await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems);
             CurrentlyWorking = false;
         });
+
         public void AddCurrentFilename() => NewName += " $currentName$";
         public void AddLastModifiedDate() => NewName += " $lastModifiedDate$";
-
-        public void ClearNewName() => System.Diagnostics.Debug.WriteLine(CurrentlyWorking);
-        // NewName = "";
-
+        public void ClearNewName() => NewName = "";
     }
 }

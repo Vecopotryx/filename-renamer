@@ -9,25 +9,9 @@ using System.Threading.Tasks;
 
 namespace FilenameRenamer.Models
 {
-    class FileHandler : INotifyPropertyChanged
+    class FileHandler
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new ObservableCollection<DirectoryItem>();
-
-        // Set should be private, just not sure how to get it to update in MainWindow.
-
-        private bool _currentlyWorking = false;
-        public bool CurrentlyWorking
-        {
-            get => _currentlyWorking;
-            set
-            {
-                _currentlyWorking = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentlyWorking)));
-            }
-        }
-
 
         public void AddNewDirectoryItem(DirectoryInfo directoryInfo)
         {
@@ -38,6 +22,18 @@ namespace FilenameRenamer.Models
                 DirectoryName = directoryInfo.Name,
                 FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles()))
             });
+        }
+
+        public void RemoveFileFromList(FileInfo file)
+        {
+            foreach (var directory in DirectoryItems)
+            {
+                System.Diagnostics.Debug.WriteLine(directory.DirectoryName + " " + file.Directory.Name);
+                if (directory.DirectoryName == file.Directory.Name)
+                {
+                    directory.FileInfos.Remove(file);
+                }
+            }
         }
 
         public void AddSingleFileToDirectoryItems(FileInfo file)

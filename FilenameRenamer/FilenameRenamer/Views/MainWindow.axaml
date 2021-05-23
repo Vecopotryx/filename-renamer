@@ -32,7 +32,7 @@
                     <RowDefinition Height="10*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <TreeView Padding="8" Grid.Row="0" Items="{Binding GraphicalFileList}">
+                <TreeView SelectedItem="{Binding SelectedFile}" Padding="8" Grid.Row="0" Items="{Binding GraphicalFileList}">
                     <TreeView.DataTemplates>
                         <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
 							<Border Padding="4">
@@ -110,9 +110,10 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <ProgressBar IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
+                    <ProgressBar Margin="3" IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
                     <Button Grid.Column="1"
                             HorizontalAlignment="Right"
+                            IsEnabled="{Binding !CurrentlyWorking}"
                             Command="{Binding ApplyButtonClick}">
                         Apply
                     </Button>
