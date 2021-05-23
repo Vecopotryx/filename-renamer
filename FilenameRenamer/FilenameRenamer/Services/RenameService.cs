@@ -16,11 +16,17 @@ namespace FilenameRenamer.Services
             // Also show error if FileInfos is null?
             foreach (var directory in directoryItems)
             {
+                string newPath = path;
+                if (directoryItems.Count() > 1)
+                {
+                    newPath = path + "\\" + directory.DirectoryName;
+                }
+
                 if (directory.FileInfos != null)
                 {
                     foreach (var file in directory.FileInfos)
                     {
-                        HandleRename(file, newName, path, useCustomPath);
+                        HandleRename(file, newName, newPath, useCustomPath);
                     }
                 }
             }
@@ -28,7 +34,7 @@ namespace FilenameRenamer.Services
 
         public void HandleRename(FileInfo inputFile, string newName, string path, bool useCustomPath)
         {
-            string localNewName = newName;
+            string localNewName = newName.Trim();
             // Check if $currentName$ exists and if so replace it
             localNewName = localNewName.Replace("$currentName$", Path.GetFileNameWithoutExtension(inputFile.Name));
             // Check if $lastModifiedDate$ exists and if so replace it
@@ -42,12 +48,10 @@ namespace FilenameRenamer.Services
                     {
                         Directory.CreateDirectory(@path);
                     }
-                    System.Diagnostics.Debug.WriteLine(@path + "\\" + localNewName + inputFile.Extension);
                     inputFile.CopyTo(@path + "\\" + localNewName + inputFile.Extension);
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine(@inputFile.DirectoryName + "\\" + localNewName + inputFile.Extension);
                     inputFile.MoveTo(@inputFile.DirectoryName + "\\" + localNewName + inputFile.Extension);
                 }
             }

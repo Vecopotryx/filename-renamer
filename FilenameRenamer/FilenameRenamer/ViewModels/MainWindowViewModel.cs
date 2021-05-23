@@ -60,14 +60,30 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
+        private bool _findAndReplaceOn = false;
+        public bool FindAndReplaceOn
+        {
+            get => _findAndReplaceOn;
+            set
+            {
+                _findAndReplaceOn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string _textToFind { get; set; }
+        public string _textToReplaceWith { get; set; }
+
+
         private string _selectedFile;
         public string SelectedFile
         {
             get => _selectedFile;
             set
             {
+                System.Diagnostics.Debug.WriteLine(value);
                 _selectedFile = value;
-                OnPropertyChanged();
+                // OnPropertyChanged();
             }
         }
 
@@ -122,7 +138,13 @@ namespace FilenameRenamer.ViewModels
             fileHandler.AddSingleFileToDirectoryItems(resultFile);
         }
 
-        public void DiscardFile() => fileHandler.RemoveFileFromList(new FileInfo(_selectedFile));
+
+        // Can only remove files, not directories.
+        public void DiscardItem()
+        {
+            System.Diagnostics.Debug.WriteLine(_selectedFile);
+            fileHandler.RemoveFileFromList(new FileInfo(_selectedFile));
+        }
 
         public void DiscardAll()
         {

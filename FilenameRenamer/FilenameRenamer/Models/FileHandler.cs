@@ -26,12 +26,24 @@ namespace FilenameRenamer.Models
 
         public void RemoveFileFromList(FileInfo file)
         {
-            foreach (var directory in DirectoryItems)
+            foreach (var directory in DirectoryItems.ToList())
             {
-                System.Diagnostics.Debug.WriteLine(directory.DirectoryName + " " + file.Directory.Name);
                 if (directory.DirectoryName == file.Directory.Name)
                 {
-                    directory.FileInfos.Remove(file);
+                    foreach (var fileInfo in directory.FileInfos.ToList()) 
+                    {
+                        if (fileInfo.Name == file.Name)
+                        {
+                            if (directory.FileInfos.Count <= 1)
+                            {
+                                DirectoryItems.Remove(directory);
+                            }
+                            else
+                            {
+                                directory.FileInfos.Remove(fileInfo);
+                            }
+                        }
+                    }
                 }
             }
         }

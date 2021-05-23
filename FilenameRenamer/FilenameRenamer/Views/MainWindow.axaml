@@ -55,7 +55,7 @@
                 </TreeView>
                 <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal" Spacing="8">
                     <Button Command="{Binding SelectFile}">+</Button>
-                    <Button Command="{Binding DiscardFile}">-</Button>
+                    <Button Command="{Binding DiscardItem}">-</Button>
                     <Button Command="{Binding DiscardAll}">Discard all</Button>
                     <Button Command="{Binding OpenFolder}">Open Folder</Button>
                 </StackPanel>
@@ -81,7 +81,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" VerticalAlignment="Center" Text="{Binding NewName}"></TextBox>
-                    <Button Grid.Column="1" 
+                    <Button Margin="5,0,0,0"
+                            Grid.Column="1" 
                             VerticalAlignment="Stretch"
                             Command="{Binding ClearNewName}">
                         x
@@ -91,14 +92,18 @@
 					<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
 					<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
 					<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
-					<Button>Yes</Button>
-					<Button>Yes</Button>
+					<Button>Directory name</Button>
 				</StackPanel>
 			</Grid>
 			<StackPanel Grid.Row="1" VerticalAlignment="Top" Orientation="Vertical" Spacing="8">
-				<CheckBox>Random checkbox 1</CheckBox>
 				<CheckBox>Custom date format</CheckBox>
-				<CheckBox>Find and replace</CheckBox>
+				<CheckBox IsChecked="{Binding FindAndReplaceOn}">Find and replace</CheckBox>
+                <StackPanel IsVisible="{Binding FindAndReplaceOn}" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">You can use variables like $lastModifiedDate$ here</TextBlock>
+                    <TextBox Watermark="Find" Text="{Binding _textToFind}"></TextBox>
+                    <TextBlock VerticalAlignment="Center">--></TextBlock>
+					<TextBox Watermark="Replace With" Text="{Binding _textToReplaceWith}"></TextBox>
+                </StackPanel>
                 <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory (keep old files and old names in current directory)</CheckBox>
 				<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
                     <TextBox IsReadOnly="True" Text="{Binding CustomPath}"></TextBox>
