@@ -161,7 +161,7 @@ namespace FilenameRenamer.ViewModels
         public void ApplyButtonClick() => Task.Run(async () =>
         {
             CurrentlyWorking = true;
-            await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems, CustomPath, CopyFilesOptionOn);
+            await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems, CustomPath, CopyFilesOptionOn, FindAndReplaceOn);
             CurrentlyWorking = false;
         });
 
