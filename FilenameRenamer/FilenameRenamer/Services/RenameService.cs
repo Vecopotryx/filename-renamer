@@ -56,7 +56,7 @@ namespace FilenameRenamer.Services
                     inputFile.MoveTo(@inputFile.DirectoryName + "/" + localNewName + inputFile.Extension);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Some error occurred " + e.Message);
             }

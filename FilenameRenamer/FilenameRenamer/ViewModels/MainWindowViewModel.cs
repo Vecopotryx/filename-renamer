@@ -24,7 +24,7 @@ namespace FilenameRenamer.ViewModels
         // Maybe add option to change folder names?
 
         private FileHandler fileHandler = new FileHandler();
-        private RenameService renameService = new RenameService(); 
+        private RenameService renameService = new RenameService();
 
         public ObservableCollection<DirectoryItem> GraphicalFileList
         {
@@ -151,7 +151,7 @@ namespace FilenameRenamer.ViewModels
             // Should the application prompt user first perhaps?
             fileHandler.DirectoryItems.Clear();
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

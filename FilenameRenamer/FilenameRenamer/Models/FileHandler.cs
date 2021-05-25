@@ -16,7 +16,7 @@ namespace FilenameRenamer.Models
         public void AddNewDirectoryItem(DirectoryInfo directoryInfo)
         {
             System.Diagnostics.Debug.WriteLine(directoryInfo.Name);
-            
+
             DirectoryItems.Add(new DirectoryItem
             {
                 DirectoryName = directoryInfo.Name,
@@ -30,7 +30,7 @@ namespace FilenameRenamer.Models
             {
                 if (directory.DirectoryName == file.Directory.Name)
                 {
-                    foreach (var fileInfo in directory.FileInfos.ToList()) 
+                    foreach (var fileInfo in directory.FileInfos.ToList())
                     {
                         if (fileInfo.Name == file.Name)
                         {
@@ -67,7 +67,7 @@ namespace FilenameRenamer.Models
                 {
                     DirectoryName = file.Directory.Name,
                     FileInfos = new ObservableCollection<FileInfo>() { file }
-            });
+                });
             }
         }
     }
