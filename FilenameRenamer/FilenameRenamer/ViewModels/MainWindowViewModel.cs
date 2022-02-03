@@ -75,14 +75,13 @@ namespace FilenameRenamer.ViewModels
         public string _textToReplaceWith { get; set; }
 
 
-        private string _selectedFile;
-        public string SelectedFile
+        private Object _selectedObject;
+        public Object SelectedObject
         {
-            get => _selectedFile;
+            get => _selectedObject;
             set
             {
-                System.Diagnostics.Debug.WriteLine(value);
-                _selectedFile = value;
+                _selectedObject = value;
                 // OnPropertyChanged();
             }
         }
@@ -105,7 +104,7 @@ namespace FilenameRenamer.ViewModels
 
             fileHandler.AddNewDirectoryItem(new System.IO.DirectoryInfo(@result));
 
-            System.Diagnostics.Debug.WriteLine("Folder selected " + result);
+            // System.Diagnostics.Debug.WriteLine("Folder selected " + result);
         }
 
         private string _customPath = "";
@@ -133,18 +132,14 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFileDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            var resultFile = new FileInfo(result[0]);
+            if(result != null)
+            {
+                fileHandler.AddSingleFileToDirectoryItems(new FileInfo(result[0]));
+            }
 
-            fileHandler.AddSingleFileToDirectoryItems(resultFile);
         }
 
-
-        // Can only remove files, not directories.
-        public void DiscardItem()
-        {
-            System.Diagnostics.Debug.WriteLine(_selectedFile);
-            fileHandler.RemoveFileFromList(new FileInfo(_selectedFile));
-        }
+        public void DiscardSelected() => fileHandler.RemoveFromList(_selectedObject);
 
         public void DiscardAll()
         {

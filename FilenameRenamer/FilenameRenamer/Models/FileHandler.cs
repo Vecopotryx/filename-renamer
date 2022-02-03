@@ -30,21 +30,26 @@ namespace FilenameRenamer.Models
             {
                 if (directory.DirectoryName == file.Directory.Name)
                 {
-                    foreach (var fileInfo in directory.FileInfos.ToList())
+                    if (directory.FileInfos.Count <= 1)
                     {
-                        if (fileInfo.Name == file.Name)
-                        {
-                            if (directory.FileInfos.Count <= 1)
-                            {
-                                DirectoryItems.Remove(directory);
-                            }
-                            else
-                            {
-                                directory.FileInfos.Remove(fileInfo);
-                            }
-                        }
+                        DirectoryItems.Remove(directory);
+                    } else
+                    {
+                        directory.FileInfos.Remove(file);
                     }
                 }
+            }
+        }
+
+        public void RemoveFromList(Object input)
+        {
+            if (input is FileInfo)
+            {
+                RemoveFileFromList((FileInfo)input);
+            }
+            else if (input is DirectoryItem)
+            {
+                DirectoryItems.Remove((DirectoryItem)input);
             }
         }
 

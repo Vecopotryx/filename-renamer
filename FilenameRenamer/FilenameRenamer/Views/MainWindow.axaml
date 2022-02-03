@@ -26,11 +26,14 @@
 		<DockPanel Grid.Column="0" Background="#60000000">
             <StackPanel Margin="5" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
                     <Button Command="{Binding SelectFile}">+</Button>
-                    <Button Command="{Binding DiscardItem}">-</Button>
+                    <Button Command="{Binding DiscardSelected}">-</Button>
                     <Button Command="{Binding DiscardAll}">Discard all</Button>
                     <Button Command="{Binding OpenFolder}">Open Folder</Button>
             </StackPanel>
-            <TreeView SelectedItem="{Binding SelectedFile}" Padding="8" Items="{Binding GraphicalFileList}">
+            <TreeView SelectedItem="{Binding SelectedObject}" Padding="8" Items="{Binding GraphicalFileList}">
+				<TreeView.KeyBindings>
+                    <KeyBinding Gesture="Delete" Command="{Binding DiscardSelected}" />
+                </TreeView.KeyBindings>
                 <TreeView.DataTemplates>
                     <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
                         <StackPanel Orientation="Horizontal">
