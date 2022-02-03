@@ -9,7 +9,7 @@
         x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Filename Renamer"
-        Background="#99000000"
+        Background="Transparent"
         TransparencyLevelHint="AcrylicBlur"
         >
 
@@ -17,85 +17,57 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Border CornerRadius="10" >
-        <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
 			<ColumnDefinition Width="1*" />
 			<ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="1*" />
-		</Grid.RowDefinitions>
-		<Panel Grid.Column="0" Background="Transparent">
-            <Grid Margin="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-                <TreeView SelectedItem="{Binding SelectedFile}" Padding="8" Grid.Row="0" Items="{Binding GraphicalFileList}">
-                    <TreeView.DataTemplates>
-                        <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
-							<Border Padding="4">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image></Image>
-                                    <TextBlock Text="{Binding DirectoryName}"></TextBlock>
-                                    <TextBlock Text="{Binding FileInfos.Count, StringFormat=' ({0} files)'}"></TextBlock>
-                                </StackPanel>
-							</Border>
-						</TreeDataTemplate>
-                        <DataTemplate DataType="io:FileInfo">
-                            <Border Padding="4">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image></Image>
-                                    <TextBlock Text="{Binding Name}"></TextBlock>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </TreeView.DataTemplates>
-                </TreeView>
-                <StackPanel HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal" Spacing="8">
+		
+		<DockPanel Grid.Column="0" Background="#60000000">
+            <StackPanel Margin="5" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
                     <Button Command="{Binding SelectFile}">+</Button>
                     <Button Command="{Binding DiscardItem}">-</Button>
                     <Button Command="{Binding DiscardAll}">Discard all</Button>
                     <Button Command="{Binding OpenFolder}">Open Folder</Button>
-                </StackPanel>
-            </Grid>
-        </Panel>
-		<Panel Grid.Column="1" Background="#99000000">
-            <Grid Margin="20,5,20,5">
-                <Grid.ColumnDefinitions>
-				<ColumnDefinition Width="1*" />
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="1*" />
-			</Grid.RowDefinitions>
-			<Grid Grid.Row="0">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" VerticalAlignment="Center" Text="{Binding NewName}"></TextBox>
-                    <Button Margin="5,0,0,0"
-                            Grid.Column="1" 
-                            VerticalAlignment="Stretch"
-                            Command="{Binding ClearNewName}">
-                        x
-                    </Button>
-				</Grid>
-                <StackPanel Margin="3" HorizontalAlignment="Center" Grid.Row="1" Orientation="Horizontal" Spacing="8">
+            </StackPanel>
+            <TreeView SelectedItem="{Binding SelectedFile}" Padding="8" Items="{Binding GraphicalFileList}">
+                <TreeView.DataTemplates>
+                    <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding DirectoryName}"></TextBlock>
+                            <TextBlock Text="{Binding FileInfos.Count, StringFormat=' ({0} files)'}"></TextBlock>
+                        </StackPanel>
+                    </TreeDataTemplate>
+                    <DataTemplate DataType="io:FileInfo">
+                        <TextBlock Text="{Binding Name}"></TextBlock>
+                    </DataTemplate>
+                </TreeView.DataTemplates>
+            </TreeView>
+        </DockPanel>
+		
+		<DockPanel Grid.Column="1" Background="#90000000">
+			<DockPanel Margin="10" DockPanel.Dock="Top">
+                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+                    <Button DockPanel.Dock="Right" Command="{Binding ClearNewName}" Content="x"/>
+                    <TextBox Text="{Binding NewName}"></TextBox>
+				</DockPanel>
+                <StackPanel Margin="0,5" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
 					<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
 					<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
 					<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
 					<Button>Directory name</Button>
 				</StackPanel>
-			</Grid>
-			<StackPanel Grid.Row="1" VerticalAlignment="Top" Orientation="Vertical" Spacing="8">
+			</DockPanel>
+				
+			<DockPanel Margin="5" DockPanel.Dock="Bottom">
+                <Button DockPanel.Dock="Right"
+                        IsEnabled="{Binding !CurrentlyWorking}"
+                        Command="{Binding ApplyButtonClick}"
+                        Content="Apply"/>
+                <ProgressBar Margin="5" IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
+            </DockPanel>
+				
+			<StackPanel Margin="10" Orientation="Vertical" Spacing="8">
 				<CheckBox>Custom date format</CheckBox>
 				<CheckBox IsChecked="{Binding FindAndReplaceOn}">Find and replace</CheckBox>
                 <StackPanel IsVisible="{Binding FindAndReplaceOn}" Orientation="Horizontal">
@@ -110,26 +82,10 @@
 					<Button 
                         VerticalAlignment="Stretch"
                         Command="{Binding SelectCopyFolder}"
-                        >
-                        Select folder
-                    </Button>
+						Content="Select folder"
+				    />
                 </StackPanel>
-            </StackPanel>
-				<Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ProgressBar Margin="3" IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
-                    <Button Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            IsEnabled="{Binding !CurrentlyWorking}"
-                            Command="{Binding ApplyButtonClick}">
-                        Apply
-                    </Button>
-                </Grid>
-            </Grid>
-        </Panel>
+            </StackPanel>			
+        </DockPanel>
     </Grid>
-    </Border>
 </Window>
