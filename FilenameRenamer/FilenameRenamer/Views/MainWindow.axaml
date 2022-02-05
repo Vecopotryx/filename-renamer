@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:FilenameRenamer.Models"
         xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
+	    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions.Custom"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -23,7 +26,7 @@
 			<ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 		
-		<DockPanel Grid.Column="0" Background="#60000000">
+		<DockPanel Grid.Column="0" Background="#60292f2f">
             <StackPanel Margin="5" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
                     <Button Command="{Binding SelectFile}">+</Button>
                     <Button Command="{Binding DiscardSelected}">-</Button>
@@ -48,17 +51,34 @@
             </TreeView>
         </DockPanel>
 		
-		<DockPanel Grid.Column="1" Background="#90000000">
+		<DockPanel Grid.Column="1" Background="#60090f0f">
 			<DockPanel Margin="10" DockPanel.Dock="Top">
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
                     <Button DockPanel.Dock="Right" Command="{Binding ClearNewName}" Content="x"/>
-                    <TextBox Text="{Binding NewName}"></TextBox>
+					<Border CornerRadius="4" Background="#20ffffff">
+					<ItemsControl Items="{Binding ComponentItems}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal" Spacing="4" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Button Name="ChangeProperty" 
+										IsEnabled="{Binding IsEnabled}"
+										Content="{Binding content}"
+										Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.MoveComponent}"
+                                        CommandParameter="{Binding }" 
+							    />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+					</Border>
 				</DockPanel>
                 <StackPanel Margin="0,5" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
 					<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
 					<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
 					<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
-					<Button>Directory name</Button>
 				</StackPanel>
 			</DockPanel>
 				
@@ -71,23 +91,22 @@
             </DockPanel>
 				
 			<StackPanel Margin="10" Orientation="Vertical" Spacing="8">
-				<CheckBox>Custom date format</CheckBox>
 				<CheckBox IsChecked="{Binding FindAndReplaceOn}">Find and replace</CheckBox>
-                <StackPanel IsVisible="{Binding FindAndReplaceOn}" Orientation="Horizontal">
+                <!--<StackPanel IsVisible="{Binding FindAndReplaceOn}" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center">You can use variables like $lastModifiedDate$ here</TextBlock>
                     <TextBox Watermark="Find" Text="{Binding _textToFind}"></TextBox>
-                    <TextBlock VerticalAlignment="Center">--></TextBlock>
+                    <TextBlock VerticalAlignment="Center"></TextBlock>
 					<TextBox Watermark="Replace With" Text="{Binding _textToReplaceWith}"></TextBox>
-                </StackPanel>
-                <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory (keep old files and old names in current directory)</CheckBox>
-				<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
+                </StackPanel>-->
+                <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory</CheckBox>
+				<!--<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
                     <TextBox IsReadOnly="True" Text="{Binding CustomPath}"></TextBox>
 					<Button 
                         VerticalAlignment="Stretch"
                         Command="{Binding SelectCopyFolder}"
 						Content="Select folder"
 				    />
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>			
         </DockPanel>
     </Grid>

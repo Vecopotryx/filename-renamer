@@ -36,19 +36,6 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-        private string _newName = "$currentName$";
-        public string NewName
-        {
-            get => _newName;
-            set
-            {
-                // Maybe trim value for preview?
-                _newName = value;
-                OnPropertyChanged();
-            }
-        }
-
-
         private bool _copyFilesOptionOn = false;
         public bool CopyFilesOptionOn
         {
@@ -132,7 +119,7 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFileDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            if(result != null)
+            if (result != null)
             {
                 fileHandler.AddSingleFileToDirectoryItems(new FileInfo(result[0]));
             }
@@ -156,12 +143,73 @@ namespace FilenameRenamer.ViewModels
         public void ApplyButtonClick() => Task.Run(async () =>
         {
             CurrentlyWorking = true;
-            await renameService.ExecuteRename(NewName, fileHandler.DirectoryItems, CustomPath, CopyFilesOptionOn, FindAndReplaceOn);
+            await renameService.ExecuteRename(GetNameString(), fileHandler.DirectoryItems, CustomPath, CopyFilesOptionOn, FindAndReplaceOn);
             CurrentlyWorking = false;
         });
 
-        public void AddCurrentFilename() => NewName += " $currentName$";
-        public void AddLastModifiedDate() => NewName += " $lastModifiedDate$";
-        public void ClearNewName() => NewName = "";
+        public void AddCurrentFilename() => ComponentItems.Add(new VarComponent
+        {
+            content = "Current Name",
+            IsEnabled = true
+        });
+
+        private int index = 0;
+        public void AddLastModifiedDate()
+        {
+            ComponentItems.Add(new VarComponent
+            {
+                content = "Last Modified Date" + index,
+                IsEnabled = true
+            });
+            index++;
+        }
+        public void ClearNewName() => ComponentItems.Clear();
+
+        public ObservableCollection<VarComponent> ComponentItems { get; set; } = new ObservableCollection<VarComponent>()
+        {
+            new VarComponent(){ content = "Current Name", IsEnabled=true}
+        };
+
+        public void MoveComponent(VarComponent component)
+        {
+            int currentIndex = ComponentItems.IndexOf(component);
+            if(currentIndex + 1 < ComponentItems.Count)
+            {
+                ComponentItems.Move(currentIndex, currentIndex + 1);
+            }
+        }
+
+        public string GetNameString()
+        {
+            string name = "";
+            foreach(VarComponent component in ComponentItems)
+            {
+                if(component.content == "Current Name")
+                {
+                    if(name.Length > 0)
+                    {
+                        name += " ";
+                    }
+                    name += "$currentName$";
+                } else if (component.content.Contains("Last Modified Date"))
+                {
+                    if (name.Length > 0)
+                    {
+                        name += " ";
+                    }
+                    name += "$lastModifiedDate$";
+                }
+            }
+            System.Diagnostics.Debug.WriteLine(name);
+            return name;
+        }
+    }
+
+    public class VarComponent
+    {
+        // Implement interfaces and stuff later and move to Models
+        public string content { get; set; }
+        public bool IsEnabled { get; set; }
+
     }
 }
