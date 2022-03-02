@@ -15,6 +15,8 @@ using FilenameRenamer.Views;
 using FilenameRenamer.Models;
 using FilenameRenamer.Services;
 using ReactiveUI;
+using FilenameRenamer.Models.Interfaces;
+using FilenameRenamer.Models.Components;
 
 namespace FilenameRenamer.ViewModels
 {
@@ -147,30 +149,35 @@ namespace FilenameRenamer.ViewModels
             CurrentlyWorking = false;
         });
 
-        public void AddCurrentFilename() => ComponentItems.Add(new VarComponent
+        public void AddCurrentFilename() => ComponentItems.Add(new CurrentName()/*new VarComponent
         {
             content = "Current Name",
             IsEnabled = true
-        });
+        }*/);
 
         private int index = 0;
         public void AddLastModifiedDate()
         {
-            ComponentItems.Add(new VarComponent
+            ComponentItems.Add(new FileDate());
+            /*ComponentItems.Add(new VarComponent
             {
                 content = "Last Modified Date" + index,
                 IsEnabled = true
             });
-            index++;
+            index++;*/
         }
         public void ClearNewName() => ComponentItems.Clear();
 
-        public ObservableCollection<VarComponent> ComponentItems { get; set; } = new ObservableCollection<VarComponent>()
+        /*public ObservableCollection<VarComponent> ComponentItems { get; set; } = new ObservableCollection<VarComponent>()
         {
             new VarComponent(){ content = "Current Name", IsEnabled=true}
+        };*/
+        public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new ObservableCollection<IComponentItem>()
+        {
+            new FileDate()
         };
 
-        public void MoveComponent(VarComponent component)
+        public void MoveComponent(IComponentItem component)
         {
             int currentIndex = ComponentItems.IndexOf(component);
             if(currentIndex + 1 < ComponentItems.Count)
@@ -178,6 +185,8 @@ namespace FilenameRenamer.ViewModels
                 ComponentItems.Move(currentIndex, currentIndex + 1);
             }
         }
+
+        public void RemoveComponent(IComponentItem component) => ComponentItems.Remove(component);
 
         public string GetNameString()
         {

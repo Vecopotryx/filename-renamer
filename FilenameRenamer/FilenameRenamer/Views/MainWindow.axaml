@@ -55,25 +55,31 @@
 			<DockPanel Margin="10" DockPanel.Dock="Top">
                 <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
                     <Button DockPanel.Dock="Right" Command="{Binding ClearNewName}" Content="x"/>
-					<Border CornerRadius="4" Background="#20ffffff">
-					<ItemsControl Items="{Binding ComponentItems}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<StackPanel Orientation="Horizontal" Spacing="4" />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<Button Name="ChangeProperty" 
-										IsEnabled="{Binding IsEnabled}"
-										Content="{Binding content}"
-										Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.MoveComponent}"
-                                        CommandParameter="{Binding }" 
-							    />
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-					</Border>
+					<ScrollViewer HorizontalScrollBarVisibility="Auto">
+						<Border CornerRadius="4" Background="#20ffffff">
+					        <ItemsControl Items="{Binding ComponentItems}">
+						        <ItemsControl.ItemsPanel>
+							        <ItemsPanelTemplate>
+								        <StackPanel Orientation="Horizontal" Spacing="4" />
+							        </ItemsPanelTemplate>
+						        </ItemsControl.ItemsPanel>
+						        <ItemsControl.ItemTemplate>
+							        <DataTemplate>
+										<Button Content="{Binding Content}"
+										        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.MoveComponent}"
+                                                CommandParameter="{Binding }">
+											<!--Drag to remove?-->
+											<i:Interaction.Behaviors>
+												<ia:EventTriggerBehavior EventName="DoubleTapped">
+													<ia:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveComponent}" CommandParameter="{Binding}" />
+												</ia:EventTriggerBehavior>
+											</i:Interaction.Behaviors>
+										</Button>
+							        </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+					        </ItemsControl>
+					    </Border>
+					</ScrollViewer>
 				</DockPanel>
                 <StackPanel Margin="0,5" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
 					<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
