@@ -104,15 +104,6 @@
                     <TextBlock VerticalAlignment="Center"></TextBlock>
 					<TextBox Watermark="Replace With" Text="{Binding _textToReplaceWith}"></TextBox>
                 </StackPanel>-->
-                <CheckBox IsChecked="{Binding CopyFilesOptionOn}">Copy files to new directory</CheckBox>
-				<!--<StackPanel IsVisible="{Binding CopyFilesOptionOn}" Orientation="Horizontal">
-                    <TextBox IsReadOnly="True" Text="{Binding CustomPath}"></TextBox>
-					<Button 
-                        VerticalAlignment="Stretch"
-                        Command="{Binding SelectCopyFolder}"
-						Content="Select folder"
-				    />
-                </StackPanel>-->
             </StackPanel>			
         </DockPanel>
     </Grid>

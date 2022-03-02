@@ -24,7 +24,7 @@ namespace FilenameRenamer.Models
             });
         }
 
-        public void RemoveFileFromList(FileInfo file)
+        private void RemoveFileFromList(FileInfo file)
         {
             foreach (var directory in DirectoryItems.ToList())
             {
@@ -41,7 +41,7 @@ namespace FilenameRenamer.Models
             }
         }
 
-        public void RemoveFromList(Object input)
+        public void RemoveFromList(object input)
         {
             if (input is FileInfo)
             {

@@ -28,6 +28,12 @@ namespace FilenameRenamer.ViewModels
         private FileHandler fileHandler = new FileHandler();
         private RenameService renameService = new RenameService();
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public ObservableCollection<DirectoryItem> GraphicalFileList
         {
             get => fileHandler.DirectoryItems;
@@ -38,16 +44,10 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-        private bool _copyFilesOptionOn = false;
-        public bool CopyFilesOptionOn
+        public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new ObservableCollection<IComponentItem>()
         {
-            get => _copyFilesOptionOn;
-            set
-            {
-                _copyFilesOptionOn = value;
-                OnPropertyChanged();
-            }
-        }
+            new CurrentName()
+        };
 
         private bool _findAndReplaceOn = false;
         public bool FindAndReplaceOn
@@ -60,12 +60,12 @@ namespace FilenameRenamer.ViewModels
             }
         }
 
-        public string _textToFind { get; set; }
-        public string _textToReplaceWith { get; set; }
+        public string? _textToFind { get; set; }
+        public string? _textToReplaceWith { get; set; }
 
 
-        private Object _selectedObject;
-        public Object SelectedObject
+        private object? _selectedObject;
+        public object? SelectedObject
         {
             get => _selectedObject;
             set
@@ -91,29 +91,7 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFolderDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            fileHandler.AddNewDirectoryItem(new System.IO.DirectoryInfo(@result));
-
-            // System.Diagnostics.Debug.WriteLine("Folder selected " + result);
-        }
-
-        private string _customPath = "";
-        public string CustomPath
-        {
-            get => _customPath;
-            set
-            {
-                _customPath = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        public async Task SelectCopyFolder()
-        {
-            var dialog = new OpenFolderDialog();
-            var result = await dialog.ShowAsync(new MainWindow());
-
-            CustomPath = result;
+            fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
         }
 
         public async Task SelectFile()
@@ -128,59 +106,18 @@ namespace FilenameRenamer.ViewModels
 
         }
 
-        public void DiscardSelected() => fileHandler.RemoveFromList(_selectedObject);
-
-        public void DiscardAll()
-        {
-            // Should the application prompt user first perhaps?
-            fileHandler.DirectoryItems.Clear();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public void ApplyButtonClick() => Task.Run(async () =>
         {
             CurrentlyWorking = true;
-            await renameService.ExecuteRename(GetNameString(), fileHandler.DirectoryItems, CustomPath, CopyFilesOptionOn, FindAndReplaceOn);
+            await renameService.ExecuteRename(ComponentItems, fileHandler.DirectoryItems);
             CurrentlyWorking = false;
+            // Update names in list after rename or discard?
         });
-
-        public void AddCurrentFilename() => ComponentItems.Add(new CurrentName()/*new VarComponent
-        {
-            content = "Current Name",
-            IsEnabled = true
-        }*/);
-
-        private int index = 0;
-        public void AddLastModifiedDate()
-        {
-            ComponentItems.Add(new FileDate());
-            /*ComponentItems.Add(new VarComponent
-            {
-                content = "Last Modified Date" + index,
-                IsEnabled = true
-            });
-            index++;*/
-        }
-        public void ClearNewName() => ComponentItems.Clear();
-
-        /*public ObservableCollection<VarComponent> ComponentItems { get; set; } = new ObservableCollection<VarComponent>()
-        {
-            new VarComponent(){ content = "Current Name", IsEnabled=true}
-        };*/
-        public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new ObservableCollection<IComponentItem>()
-        {
-            new FileDate()
-        };
 
         public void MoveComponent(IComponentItem component)
         {
             int currentIndex = ComponentItems.IndexOf(component);
-            if(currentIndex + 1 < ComponentItems.Count)
+            if (currentIndex + 1 < ComponentItems.Count)
             {
                 ComponentItems.Move(currentIndex, currentIndex + 1);
             }
@@ -188,37 +125,16 @@ namespace FilenameRenamer.ViewModels
 
         public void RemoveComponent(IComponentItem component) => ComponentItems.Remove(component);
 
-        public string GetNameString()
-        {
-            string name = "";
-            foreach(VarComponent component in ComponentItems)
-            {
-                if(component.content == "Current Name")
-                {
-                    if(name.Length > 0)
-                    {
-                        name += " ";
-                    }
-                    name += "$currentName$";
-                } else if (component.content.Contains("Last Modified Date"))
-                {
-                    if (name.Length > 0)
-                    {
-                        name += " ";
-                    }
-                    name += "$lastModifiedDate$";
-                }
-            }
-            System.Diagnostics.Debug.WriteLine(name);
-            return name;
-        }
-    }
+        public void DiscardSelected() => fileHandler.RemoveFromList(_selectedObject);
 
-    public class VarComponent
-    {
-        // Implement interfaces and stuff later and move to Models
-        public string content { get; set; }
-        public bool IsEnabled { get; set; }
+        // Should the application prompt user first perhaps?
+        public void DiscardAll() => fileHandler.DirectoryItems.Clear();
 
+        public void AddCurrentFilename() => ComponentItems.Add(new CurrentName());
+
+        public void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
+
+        public void ClearNewName() => ComponentItems.Clear();
+        
     }
 }
