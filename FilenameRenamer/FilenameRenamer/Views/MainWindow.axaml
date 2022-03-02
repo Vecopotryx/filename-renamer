@@ -98,12 +98,16 @@
 				
 			<StackPanel Margin="10" Orientation="Vertical" Spacing="8">
 				<CheckBox IsChecked="{Binding FindAndReplaceOn}">Find and replace</CheckBox>
-                <!--<StackPanel IsVisible="{Binding FindAndReplaceOn}" Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center">You can use variables like $lastModifiedDate$ here</TextBlock>
-                    <TextBox Watermark="Find" Text="{Binding _textToFind}"></TextBox>
-                    <TextBlock VerticalAlignment="Center"></TextBlock>
-					<TextBox Watermark="Replace With" Text="{Binding _textToReplaceWith}"></TextBox>
-                </StackPanel>-->
+				<DockPanel IsVisible="{Binding FindAndReplaceOn}">
+					<Grid DockPanel.Dock="Top" ColumnDefinitions="1*,Auto,1*">
+						<TextBox Grid.Column="0" Watermark="Find" Text="{Binding _textToFind}"></TextBox>
+						<TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">=></TextBlock>
+						<TextBox Grid.Column="2" DockPanel.Dock="Right" Watermark="Replace With" Text="{Binding _textToReplaceWith}"></TextBox>
+					</Grid>
+					<TextBlock DockPanel.Dock="Top">You can use variables here, you can also leave the replace box empty to remove found text</TextBlock>
+					<TextBlock DockPanel.Dock="Top">Available variables:</TextBlock>
+					<TextBlock >$lmd$ - Gets last modified date from file</TextBlock>
+				</DockPanel>
             </StackPanel>			
         </DockPanel>
     </Grid>

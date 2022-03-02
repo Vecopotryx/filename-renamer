@@ -108,11 +108,24 @@ namespace FilenameRenamer.ViewModels
 
         public void ApplyButtonClick() => Task.Run(async () =>
         {
+            UpdateFindAndReplace();
             CurrentlyWorking = true;
             await renameService.ExecuteRename(ComponentItems, fileHandler.DirectoryItems);
             CurrentlyWorking = false;
             // Update names in list after rename or discard?
         });
+
+        private void UpdateFindAndReplace()
+        {
+                foreach(var item in ComponentItems)
+                {
+                    var nameItem = item as CurrentName;
+                    if (nameItem != null)
+                    {
+                        nameItem.UpdateFindReplace(FindAndReplaceOn, _textToFind, _textToReplaceWith);
+                    }
+                }
+        }
 
         public void MoveComponent(IComponentItem component)
         {
