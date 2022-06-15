@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FilenameRenamer.Models.Interfaces;
 
 namespace FilenameRenamer.Models.Components
 {
     public class FileDate : IComponentItem
     {
-        public string Content { get => "Last Modified Date"; set => throw new NotImplementedException(); }
+        Avalonia.Controls.Button btn = new Avalonia.Controls.Button() { Content = "Last Modified Date" };
+        public Avalonia.Controls.Control Component { get => btn; set => throw new NotImplementedException(); }
 
-        public string GetStuff(FileInfo inputFile)
-        {
-            return inputFile.LastWriteTime.ToShortDateString();
-        }
+        public string GetStuff(FileInfo inputFile) => inputFile.LastWriteTime.ToShortDateString();
     }
 }

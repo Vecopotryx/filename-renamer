@@ -1,12 +1,15 @@
-﻿using FilenameRenamer.Models.Interfaces;
-using System;
+﻿using System;
 using System.IO;
+using FilenameRenamer.Models.Interfaces;
 
 namespace FilenameRenamer.Models.Components
 {
     public class CurrentName : IComponentItem
     {
-        public string Content { get => "Current Name"; set => throw new NotImplementedException(); }
+
+        Avalonia.Controls.Button btn = new Avalonia.Controls.Button() { Content="Current Name" };
+        
+        public Avalonia.Controls.Control Component { get => btn; set => throw new NotImplementedException(); }
 
         public string GetStuff(FileInfo inputFile) => Path.GetFileNameWithoutExtension(inputFile.Name);
        

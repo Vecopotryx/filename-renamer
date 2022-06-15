@@ -8,6 +8,7 @@
 	    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions.Custom"
+        xmlns:components="clr-namespace:FilenameRenamer.Views.Components"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -19,7 +20,6 @@
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
     <Grid>
         <Grid.ColumnDefinitions>
 			<ColumnDefinition Width="1*" />
@@ -65,17 +65,17 @@
 						        </ItemsControl.ItemsPanel>
 						        <ItemsControl.ItemTemplate>
 							        <DataTemplate>
-										<Button Content="{Binding Content}"
-										        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.MoveComponent}"
-                                                CommandParameter="{Binding }">
+										<Panel>
+											<components:Draggable Content="{Binding Component}"/>
+											
 											<!--Drag to remove?-->
 											<i:Interaction.Behaviors>
-												<ia:EventTriggerBehavior EventName="DoubleTapped">
+												<ia:EventTriggerBehavior EventName="Tapped">
 													<ia:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveComponent}" CommandParameter="{Binding}" />
 												</ia:EventTriggerBehavior>
 											</i:Interaction.Behaviors>
-										</Button>
-							        </DataTemplate>
+										</Panel>
+									</DataTemplate>
                                 </ItemsControl.ItemTemplate>
 					        </ItemsControl>
 					    </Border>
