@@ -30,15 +30,15 @@ namespace FilenameRenamer.Services
 
         public void HandleRename(ObservableCollection<IComponentItem> componentItems, FileInfo inputFile)
         {
-            string newName = "";
+            StringBuilder stringBuilder = new StringBuilder();
             foreach(IComponentItem component in componentItems)
             {
-                newName += component.GetStuff(inputFile) + " ";
+                stringBuilder.Append($"{component.GetStuff(inputFile)} ");
             }
 
             try
             {
-                inputFile.MoveTo(@inputFile.DirectoryName + "/" + newName.Trim() + inputFile.Extension);
+                inputFile.MoveTo(@inputFile.DirectoryName + "/" + stringBuilder.ToString().Trim() + inputFile.Extension);
             } 
             catch (Exception e)
             {
