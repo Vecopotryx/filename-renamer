@@ -29,7 +29,7 @@ namespace FilenameRenamer.Services
 
         public void HandleRename(ObservableCollection<IComponentItem> componentItems, FileInfo inputFile)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             foreach(IComponentItem component in componentItems)
             {
                 stringBuilder.Append($"{component.GetContent(inputFile)} ");

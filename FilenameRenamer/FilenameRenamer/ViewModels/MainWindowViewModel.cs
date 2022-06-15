@@ -25,8 +25,8 @@ namespace FilenameRenamer.ViewModels
         // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm?
         // Maybe add option to change folder names?
 
-        private FileHandler fileHandler = new FileHandler();
-        private RenameService renameService = new RenameService();
+        private readonly FileHandler fileHandler = new();
+        private readonly RenameService renameService = new();
 
         public ObservableCollection<DirectoryItem> GraphicalFileList
         {

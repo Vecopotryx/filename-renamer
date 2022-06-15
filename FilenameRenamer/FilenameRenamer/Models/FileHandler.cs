@@ -33,7 +33,8 @@ namespace FilenameRenamer.Models
                     if (directory.FileInfos.Count <= 1)
                     {
                         DirectoryItems.Remove(directory);
-                    } else
+                    }
+                    else
                     {
                         directory.FileInfos.Remove(file);
                     }
@@ -43,13 +44,13 @@ namespace FilenameRenamer.Models
 
         public void RemoveFromList(object input)
         {
-            if (input is FileInfo)
+            if (input is FileInfo file)
             {
-                RemoveFileFromList((FileInfo)input);
+                RemoveFileFromList(file);
             }
-            else if (input is DirectoryItem)
+            else if (input is DirectoryItem item)
             {
-                DirectoryItems.Remove((DirectoryItem)input);
+                DirectoryItems.Remove(item);
             }
         }
 
