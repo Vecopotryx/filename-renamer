@@ -20,7 +20,7 @@ using FilenameRenamer.Models.Components;
 
 namespace FilenameRenamer.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : ReactiveObject
     {
         // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm?
         // Maybe add option to change folder names?
@@ -28,19 +28,12 @@ namespace FilenameRenamer.ViewModels
         private FileHandler fileHandler = new FileHandler();
         private RenameService renameService = new RenameService();
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public ObservableCollection<DirectoryItem> GraphicalFileList
         {
             get => fileHandler.DirectoryItems;
             set
             {
                 fileHandler.DirectoryItems = value;
-                OnPropertyChanged();
             }
         }
 
@@ -49,37 +42,25 @@ namespace FilenameRenamer.ViewModels
             new CurrentName()
         };
 
-        private bool _findAndReplaceOn = false;
+        private bool _findAndReplaceOn;
         public bool FindAndReplaceOn
         {
             get => _findAndReplaceOn;
-            set
-            {
-                _findAndReplaceOn = value;
-                OnPropertyChanged();
-            }
+            set => this.RaiseAndSetIfChanged(ref _findAndReplaceOn, value);
         }
 
         private object? _selectedObject;
         public object? SelectedObject
         {
             get => _selectedObject;
-            set
-            {
-                _selectedObject = value;
-                // OnPropertyChanged();
-            }
+            set => _selectedObject = value;
         }
 
         private bool _currentlyWorking;
         public bool CurrentlyWorking
         {
             get => _currentlyWorking;
-            set
-            {
-                _currentlyWorking = value;
-                OnPropertyChanged();
-            }
+            set => this.RaiseAndSetIfChanged(ref _currentlyWorking, value);
         }
 
         public async Task OpenFolder()
@@ -131,7 +112,6 @@ namespace FilenameRenamer.ViewModels
         public void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
 
         public void AddCustomText() => ComponentItems.Add(new Text());
-
 
         public void ClearNewName() => ComponentItems.Clear();
         
