@@ -13,9 +13,8 @@ namespace FilenameRenamer.Services
 {
     class RenameService : IRenameService
     {
-        public async Task ExecuteRename(ObservableCollection<IComponentItem> componentItems, IEnumerable<DirectoryItem> directoryItems)
+        public void ExecuteRename(ObservableCollection<IComponentItem> componentItems, IEnumerable<DirectoryItem> directoryItems)
         {
-            // Need to prevent user from trying to name all files to the same thing, maybe add (1), (2), ... , (n) to the end if files are about to be named the same thing?
             foreach (var directory in directoryItems)
             {
                 if(directory.FileInfos.Count > 0)

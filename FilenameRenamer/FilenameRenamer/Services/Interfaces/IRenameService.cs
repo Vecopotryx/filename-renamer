@@ -8,7 +8,7 @@ namespace FilenameRenamer.Services.Interfaces
 {
     internal interface IRenameService
     {
-        Task ExecuteRename(ObservableCollection<Models.Interfaces.IComponentItem> componentItems, IEnumerable<DirectoryItem> directoryItems);
+        void ExecuteRename(ObservableCollection<Models.Interfaces.IComponentItem> componentItems, IEnumerable<DirectoryItem> directoryItems);
         void HandleRename(ObservableCollection<Models.Interfaces.IComponentItem> componentItems, FileInfo inputFile);
     }
 }

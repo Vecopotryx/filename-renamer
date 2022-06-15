@@ -86,10 +86,10 @@ namespace FilenameRenamer.ViewModels
 
         }
 
-        public void ApplyButtonClick() => Task.Run(async () =>
+        public void ApplyButtonClick() => Task.Run(() =>
         {
             CurrentlyWorking = true;
-            await renameService.ExecuteRename(ComponentItems, fileHandler.DirectoryItems);
+            renameService.ExecuteRename(ComponentItems, fileHandler.DirectoryItems);
             CurrentlyWorking = false;
             // Update names in list after rename or discard?
         });
