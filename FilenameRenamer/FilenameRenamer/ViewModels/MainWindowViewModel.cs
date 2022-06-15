@@ -130,6 +130,9 @@ namespace FilenameRenamer.ViewModels
 
         public void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
 
+        public void AddCustomText() => ComponentItems.Add(new Text());
+
+
         public void ClearNewName() => ComponentItems.Clear();
         
     }

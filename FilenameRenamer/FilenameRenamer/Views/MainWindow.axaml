@@ -85,6 +85,7 @@
 					<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
 					<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
 					<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
+					<Button Command="{Binding AddCustomText}">Custom text</Button>
 				</StackPanel>
 			</DockPanel>
 				
