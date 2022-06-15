@@ -70,7 +70,7 @@
 											
 											<!--Drag to remove?-->
 											<i:Interaction.Behaviors>
-												<ia:EventTriggerBehavior EventName="Tapped">
+												<ia:EventTriggerBehavior EventName="DoubleTapped">
 													<ia:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveComponent}" CommandParameter="{Binding}" />
 												</ia:EventTriggerBehavior>
 											</i:Interaction.Behaviors>
