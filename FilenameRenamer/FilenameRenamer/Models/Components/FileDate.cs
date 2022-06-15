@@ -10,11 +10,11 @@ namespace FilenameRenamer.Models.Components
     {
         readonly ComboBox cbx = new()
         {
-            SelectedIndex = 0,
             Items = new List<ComboBoxItem>() {
                 new ComboBoxItem() { Content = "YYYY-MM-DD" },
                 new ComboBoxItem() { Content = "HH-mm-ss" }
-            }
+            },
+            SelectedIndex = 0
         };
 
         public Control Component { get => cbx; set => throw new NotImplementedException(); }
