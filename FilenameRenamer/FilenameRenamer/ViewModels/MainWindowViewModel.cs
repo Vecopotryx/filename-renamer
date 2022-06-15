@@ -68,7 +68,10 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFolderDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
+            if(result != null)
+            {
+                fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
+            }
         }
 
         public async Task SelectFile()
@@ -102,8 +105,13 @@ namespace FilenameRenamer.ViewModels
 
         public void RemoveComponent(IComponentItem component) => ComponentItems.Remove(component);
 
-        public void DiscardSelected() => fileHandler.RemoveFromList(_selectedObject);
-
+        public void DiscardSelected()
+        {
+            if(_selectedObject != null)
+            {
+                fileHandler.RemoveFromList(_selectedObject);
+            }
+        }
         // Should the application prompt user first perhaps?
         public void DiscardAll() => fileHandler.DirectoryItems.Clear();
 

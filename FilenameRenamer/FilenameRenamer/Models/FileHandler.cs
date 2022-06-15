@@ -28,7 +28,7 @@ namespace FilenameRenamer.Models
         {
             foreach (var directory in DirectoryItems.ToList())
             {
-                if (directory.DirectoryName == file.Directory.Name)
+                if (file.Directory != null && directory.DirectoryName == file.Directory.Name)
                 {
                     if (directory.FileInfos.Count <= 1)
                     {
@@ -58,7 +58,7 @@ namespace FilenameRenamer.Models
             bool directoryAlreadyExists = false;
             foreach (var directoryItem in DirectoryItems)
             {
-                if (directoryItem.DirectoryName == file.Directory.Name)
+                if (file.Directory != null && directoryItem.DirectoryName == file.Directory.Name)
                 {
                     directoryItem.FileInfos.Add(file);
                     directoryAlreadyExists = true;
@@ -70,7 +70,7 @@ namespace FilenameRenamer.Models
             {
                 DirectoryItems.Add(new DirectoryItem
                 {
-                    DirectoryName = file.Directory.Name,
+                    DirectoryName = file.Directory != null ? file.Directory.Name : "",
                     FileInfos = new ObservableCollection<FileInfo>() { file }
                 });
             }
