@@ -32,7 +32,7 @@ namespace FilenameRenamer.Services
             StringBuilder stringBuilder = new StringBuilder();
             foreach(IComponentItem component in componentItems)
             {
-                stringBuilder.Append($"{component.GetStuff(inputFile)} ");
+                stringBuilder.Append($"{component.GetContent(inputFile)} ");
             }
 
             try

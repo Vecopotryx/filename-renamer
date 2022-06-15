@@ -12,7 +12,7 @@ namespace FilenameRenamer.Models.Components
         ComboBox cbx = new ComboBox() { Items = new List<ComboBoxItem>() { new ComboBoxItem() { Content = "YYYY-MM-DD" }, new ComboBoxItem() { Content = "HH-mm-ss" }  }, SelectedIndex = 0 };
         public Control Component { get => cbx; set => throw new NotImplementedException(); }
 
-        public string GetStuff(FileInfo inputFile)
+        public string GetContent(FileInfo inputFile)
         {
             switch (cbx.SelectedIndex)
             {

@@ -9,6 +9,6 @@ namespace FilenameRenamer.Models.Interfaces
     public interface IComponentItem
     {
         public Avalonia.Controls.Control Component { get; set; }
-        public string GetStuff(System.IO.FileInfo inputFile);
+        public string GetContent(System.IO.FileInfo inputFile);
     }
 }

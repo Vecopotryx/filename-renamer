@@ -11,7 +11,7 @@ namespace FilenameRenamer.Models.Components
         
         public Avalonia.Controls.Control Component { get => btn; set => throw new NotImplementedException(); }
 
-        public string GetStuff(FileInfo inputFile) => Path.GetFileNameWithoutExtension(inputFile.Name);
+        public string GetContent(FileInfo inputFile) => Path.GetFileNameWithoutExtension(inputFile.Name);
        
     }
 }

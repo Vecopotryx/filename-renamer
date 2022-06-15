@@ -11,6 +11,6 @@ namespace FilenameRenamer.Models.Components
 
         public Avalonia.Controls.Control Component { get => box; set => throw new NotImplementedException(); }
 
-        public string GetStuff(FileInfo inputFile) => box.Text;
+        public string GetContent(FileInfo inputFile) => box.Text;
     }
 }
