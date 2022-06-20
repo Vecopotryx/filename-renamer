@@ -20,7 +20,7 @@ namespace FilenameRenamer.Models
             DirectoryItems.Add(new DirectoryItem
             {
                 DirectoryName = directoryInfo.Name,
-                FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles()))
+                FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles().Where(file => (file.Attributes & FileAttributes.Hidden) == 0)))
             });
         }
 
