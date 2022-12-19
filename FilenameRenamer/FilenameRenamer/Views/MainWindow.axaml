@@ -7,6 +7,7 @@
         xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
 	    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+		xmlns:id="clr-namespace:Avalonia.Xaml.Interactions.Draggable;assembly=Avalonia.Xaml.Interactions"
         xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions.Custom"
         xmlns:components="clr-namespace:FilenameRenamer.Views.Components"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -16,7 +17,10 @@
         Background="Transparent"
         TransparencyLevelHint="AcrylicBlur"
         >
-
+	<Window.Styles>
+		<StyleInclude Source="avares://Avalonia.Xaml.Interactions/Draggable/Styles.axaml" />
+	</Window.Styles>
+	
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
@@ -58,6 +62,18 @@
 					<ScrollViewer HorizontalScrollBarVisibility="Auto">
 						<Border CornerRadius="4" Background="#20ffffff">
 					        <ItemsControl Items="{Binding ComponentItems}">
+								<ItemsControl.Styles>
+									<Style Selector=":is(ItemsControl) > :is(ContentPresenter)">
+										<Setter Property="(i:Interaction.Behaviors)">
+											<i:BehaviorCollectionTemplate>
+												<i:BehaviorCollection>
+													<id:ItemDragBehavior  />
+												</i:BehaviorCollection>
+											</i:BehaviorCollectionTemplate>
+										</Setter>
+									</Style>
+
+								</ItemsControl.Styles>
 						        <ItemsControl.ItemsPanel>
 							        <ItemsPanelTemplate>
 								        <StackPanel Orientation="Horizontal" Spacing="4" />
@@ -66,8 +82,7 @@
 						        <ItemsControl.ItemTemplate>
 							        <DataTemplate>
 										<Panel>
-											<components:Draggable Content="{Binding Component}"/>
-											
+											<Button Content="{Binding TextContent}"></Button>
 											<!--Drag to remove?-->
 											<i:Interaction.Behaviors>
 												<ia:EventTriggerBehavior EventName="DoubleTapped">

@@ -6,10 +6,9 @@ namespace FilenameRenamer.Models.Components
 {
     public class Text : IComponentItem
     {
-        readonly Avalonia.Controls.TextBox box = new() { Watermark = "Custom text" };
+        readonly string text = "";
+        public string TextContent { get => text; set => throw new NotImplementedException(); }
 
-        public Avalonia.Controls.Control Component { get => box; set => throw new NotImplementedException(); }
-
-        public string GetContent(FileInfo inputFile) => box.Text;
+        public string GetContent(FileInfo inputFile) => text;
     }
 }
