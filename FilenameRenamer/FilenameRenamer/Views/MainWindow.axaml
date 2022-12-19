@@ -96,12 +96,19 @@
 					    </Border>
 					</ScrollViewer>
 				</DockPanel>
-                <StackPanel Margin="0,5" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
-					<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
-					<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
-					<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
-					<Button Command="{Binding AddCustomText}">Custom text</Button>
-				</StackPanel>
+				<DockPanel>
+					<StackPanel DockPanel.Dock="Left" Margin="0,5" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
+						<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
+						<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
+						<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
+					</StackPanel>
+					<StackPanel DockPanel.Dock="Right" Margin="0,5" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
+						<TextBlock VerticalAlignment="Center">Custom text:</TextBlock>
+						<TextBox Text="{Binding CustomTextBox}"></TextBox>
+						<Button Command="{Binding AddCustomText}">Add text</Button>
+					</StackPanel>
+				</DockPanel>
+				
 			</DockPanel>
 				
 			<DockPanel Margin="5" DockPanel.Dock="Bottom">

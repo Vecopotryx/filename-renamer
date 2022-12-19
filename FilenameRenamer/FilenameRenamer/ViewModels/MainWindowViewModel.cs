@@ -42,6 +42,14 @@ namespace FilenameRenamer.ViewModels
             new CurrentName()
         };
 
+        private string _customTextBox = "";
+        public string CustomTextBox
+        {
+            get => _customTextBox;
+            set => this.RaiseAndSetIfChanged(ref _customTextBox, value);
+        }
+
+
         private bool _findAndReplaceOn;
         public bool FindAndReplaceOn
         {
@@ -68,7 +76,7 @@ namespace FilenameRenamer.ViewModels
             var dialog = new OpenFolderDialog();
             var result = await dialog.ShowAsync(new MainWindow());
 
-            if(result != null)
+            if (result != null)
             {
                 fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
             }
@@ -107,7 +115,7 @@ namespace FilenameRenamer.ViewModels
 
         public void DiscardSelected()
         {
-            if(_selectedObject != null)
+            if (_selectedObject != null)
             {
                 fileHandler.RemoveFromList(_selectedObject);
             }
@@ -119,8 +127,13 @@ namespace FilenameRenamer.ViewModels
 
         public void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
 
-        public void AddCustomText() => ComponentItems.Add(new Text());
-
+        public void AddCustomText()
+        {
+            if (_customTextBox.Length != 0)
+            {
+                ComponentItems.Add(new Text(_customTextBox));
+            }
+        }
         public void ClearNewName() => ComponentItems.Clear();
         
     }

@@ -10,5 +10,9 @@ namespace FilenameRenamer.Models.Components
         public string TextContent { get => text; set => throw new NotImplementedException(); }
 
         public string GetContent(FileInfo inputFile) => text;
+        public Text(string textIn)
+        {
+            text = textIn;
+        }
     }
 }
