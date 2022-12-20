@@ -17,13 +17,13 @@ public partial class MainWindowViewModel : ObservableObject
     // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm?
     // Maybe add option to change folder names?
 
-    private readonly FileHandler fileHandler = new();
-    private readonly RenameService renameService = new();
+    private readonly FileHandler _fileHandler = new();
+    private readonly RenameService _renameService = new();
 
     public ObservableCollection<DirectoryItem> GraphicalFileList
     {
-        get => fileHandler.DirectoryItems;
-        set => fileHandler.DirectoryItems = value;
+        get => _fileHandler.DirectoryItems;
+        set => _fileHandler.DirectoryItems = value;
     }
 
     public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new() { new CurrentName() };
@@ -36,40 +36,40 @@ public partial class MainWindowViewModel : ObservableObject
 
 
     [RelayCommand]
-    async Task OpenFolder()
+    private async Task OpenFolder()
     {
         var dialog = new OpenFolderDialog();
         var result = await dialog.ShowAsync(new MainWindow());
 
         if (result != null)
         {
-            fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
+            _fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
         }
     }
 
     [RelayCommand]
-    async Task SelectFile()
+    private async Task SelectFile()
     {
         var dialog = new OpenFileDialog();
         var result = await dialog.ShowAsync(new MainWindow());
 
         if (result != null)
         {
-            fileHandler.AddSingleFileToDirectoryItems(new FileInfo(result[0]));
+            _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(result[0]));
         }
     }
 
     [RelayCommand]
-    void StartRenaming() => Task.Run(() =>
+    private void StartRenaming() => Task.Run(() =>
     {
         CurrentlyWorking = true;
-        renameService.ExecuteRename(ComponentItems, fileHandler.DirectoryItems);
+        _renameService.ExecuteRename(ComponentItems, _fileHandler.DirectoryItems);
         CurrentlyWorking = false;
         // Update names in list after rename or discard?
     });
 
     [RelayCommand]
-    void RemoveComponent(object? component)
+    private void RemoveComponent(object? component)
     {
         if (component is IComponentItem itemToRemove)
         {
@@ -78,26 +78,26 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    void DiscardSelected()
+    private void DiscardSelected()
     {
         if (_selectedObject != null)
         {
-            fileHandler.RemoveFromList(_selectedObject);
+            _fileHandler.RemoveFromList(_selectedObject);
         }
     }
 
     // Should the application prompt user first perhaps?
     [RelayCommand]
-    void DiscardAll() => fileHandler.DirectoryItems.Clear();
+    private void DiscardAll() => _fileHandler.DirectoryItems.Clear();
 
     [RelayCommand]
-    void AddCurrentFilename() => ComponentItems.Add(new CurrentName());
+    private void AddCurrentFilename() => ComponentItems.Add(new CurrentName());
 
     [RelayCommand]
-    void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
+    private void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
 
     [RelayCommand]
-    void AddCustomText()
+    private void AddCustomText()
     {
         if (_customTextBox.Length != 0)
         {
@@ -106,5 +106,5 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    void ClearNewName() => ComponentItems.Clear();
+    private void ClearNewName() => ComponentItems.Clear();
 }
