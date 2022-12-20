@@ -89,7 +89,20 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding TextContent}"></Button>
+                                <Button Content="{Binding TextContent}">
+                                    <i:Interaction.Behaviors>
+                                        <!-- Double click to remove -->
+                                        <ia:EventTriggerBehavior EventName="DoubleTapped">
+                                            <ia:InvokeCommandAction
+                                                CommandParameter="{Binding}"
+                                                Command="{Binding 
+                                                    RelativeSource={ RelativeSource AncestorType=ItemsControl}, 
+                                                    Path=DataContext.RemoveComponent, FallbackValue={}
+                                                }">
+                                            </ia:InvokeCommandAction>
+                                        </ia:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                </Button>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

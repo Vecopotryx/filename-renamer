@@ -85,8 +85,14 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    public void RemoveComponent(IComponentItem component) => ComponentItems.Remove(component);
-
+    
+    public void RemoveComponent(object? component)
+    {
+        if (component is IComponentItem itemToRemove)
+        {
+            ComponentItems.Remove(itemToRemove);
+        }
+    }
     public void DiscardSelected()
     {
         if (_selectedObject != null)
