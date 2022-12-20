@@ -75,16 +75,6 @@ public partial class MainWindowViewModel : ObservableObject
         CurrentlyWorking = false;
         // Update names in list after rename or discard?
     });
-
-    public void MoveComponent(IComponentItem component)
-    {
-        int currentIndex = ComponentItems.IndexOf(component);
-        if (currentIndex + 1 < ComponentItems.Count)
-        {
-            ComponentItems.Move(currentIndex, currentIndex + 1);
-        }
-    }
-
     
     public void RemoveComponent(object? component)
     {
