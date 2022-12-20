@@ -22,28 +22,16 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<DirectoryItem> GraphicalFileList
     {
         get => fileHandler.DirectoryItems;
-        set
-        {
-            fileHandler.DirectoryItems = value;
-        }
+        set => fileHandler.DirectoryItems = value;
     }
 
-    public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new ObservableCollection<IComponentItem>()
-        {
-            new CurrentName()
-        };
+    public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new() { new CurrentName() };
 
-    [ObservableProperty]
-    private string _customTextBox = "";
+    [ObservableProperty] private string _customTextBox = "";
+    
+    [ObservableProperty] private object? _selectedObject;
 
-    [ObservableProperty]
-    private bool _findAndReplaceOn;
-
-    [ObservableProperty]
-    private object? _selectedObject;
-
-    [ObservableProperty]
-    private bool _currentlyWorking;
+    [ObservableProperty] private bool _currentlyWorking;
 
     public async Task OpenFolder()
     {
@@ -65,7 +53,6 @@ public partial class MainWindowViewModel : ObservableObject
         {
             fileHandler.AddSingleFileToDirectoryItems(new FileInfo(result[0]));
         }
-
     }
 
     public void ApplyButtonClick() => Task.Run(() =>
@@ -75,7 +62,7 @@ public partial class MainWindowViewModel : ObservableObject
         CurrentlyWorking = false;
         // Update names in list after rename or discard?
     });
-    
+
     public void RemoveComponent(object? component)
     {
         if (component is IComponentItem itemToRemove)
@@ -83,6 +70,7 @@ public partial class MainWindowViewModel : ObservableObject
             ComponentItems.Remove(itemToRemove);
         }
     }
+
     public void DiscardSelected()
     {
         if (_selectedObject != null)
@@ -90,6 +78,7 @@ public partial class MainWindowViewModel : ObservableObject
             fileHandler.RemoveFromList(_selectedObject);
         }
     }
+
     // Should the application prompt user first perhaps?
     public void DiscardAll() => fileHandler.DirectoryItems.Clear();
 
@@ -104,6 +93,6 @@ public partial class MainWindowViewModel : ObservableObject
             ComponentItems.Add(new Text(_customTextBox));
         }
     }
-    public void ClearNewName() => ComponentItems.Clear();
 
+    public void ClearNewName() => ComponentItems.Clear();
 }

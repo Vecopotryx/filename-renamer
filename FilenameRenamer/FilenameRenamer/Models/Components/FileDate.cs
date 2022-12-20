@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using Avalonia.Controls;
 using FilenameRenamer.Models.Interfaces;
 
 namespace FilenameRenamer.Models.Components

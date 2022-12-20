@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FilenameRenamer.Models
 {
     class FileHandler
     {
-        public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new ObservableCollection<DirectoryItem>();
+        public ObservableCollection<DirectoryItem> DirectoryItems { get; set; } = new();
 
         public void AddNewDirectoryItem(DirectoryInfo directoryInfo)
         {
-            System.Diagnostics.Debug.WriteLine(directoryInfo.Name);
-
             DirectoryItems.Add(new DirectoryItem
             {
                 DirectoryName = directoryInfo.Name,
-                FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles().Where(file => (file.Attributes & FileAttributes.Hidden) == 0)))
+                FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles()
+                    .Where(file => (file.Attributes & FileAttributes.Hidden) == 0)))
             });
         }
 
@@ -28,29 +23,28 @@ namespace FilenameRenamer.Models
         {
             foreach (var directory in DirectoryItems.ToList())
             {
-                if (file.Directory != null && directory.DirectoryName == file.Directory.Name)
+                if (file.Directory == null || directory.DirectoryName != file.Directory.Name) continue;
+                if (directory.FileInfos.Count <= 1)
                 {
-                    if (directory.FileInfos.Count <= 1)
-                    {
-                        DirectoryItems.Remove(directory);
-                    }
-                    else
-                    {
-                        directory.FileInfos.Remove(file);
-                    }
+                    DirectoryItems.Remove(directory);
+                }
+                else
+                {
+                    directory.FileInfos.Remove(file);
                 }
             }
         }
 
         public void RemoveFromList(object input)
         {
-            if (input is FileInfo file)
+            switch (input)
             {
-                RemoveFileFromList(file);
-            }
-            else if (input is DirectoryItem item)
-            {
-                DirectoryItems.Remove(item);
+                case FileInfo file:
+                    RemoveFileFromList(file);
+                    break;
+                case DirectoryItem item:
+                    DirectoryItems.Remove(item);
+                    break;
             }
         }
 
@@ -59,12 +53,10 @@ namespace FilenameRenamer.Models
             bool directoryAlreadyExists = false;
             foreach (var directoryItem in DirectoryItems)
             {
-                if (file.Directory != null && directoryItem.DirectoryName == file.Directory.Name)
-                {
-                    directoryItem.FileInfos.Add(file);
-                    directoryAlreadyExists = true;
-                    break;
-                }
+                if (file.Directory == null || directoryItem.DirectoryName != file.Directory.Name) continue;
+                directoryItem.FileInfos.Add(file);
+                directoryAlreadyExists = true;
+                break;
             }
 
             if (!directoryAlreadyExists)
