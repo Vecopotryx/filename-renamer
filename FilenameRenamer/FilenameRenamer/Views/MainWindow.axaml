@@ -29,10 +29,10 @@
             <!-- File selection control buttons -->
             <StackPanel Margin="5" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal"
                         Spacing="8">
-                <Button Command="{Binding SelectFile}">+</Button>
-                <Button Command="{Binding DiscardSelected}">-</Button>
-                <Button Command="{Binding DiscardAll}">Discard all</Button>
-                <Button Command="{Binding OpenFolder}">Open Folder</Button>
+                <Button Command="{Binding SelectFileCommand}">+</Button>
+                <Button Command="{Binding DiscardSelectedCommand}">-</Button>
+                <Button Command="{Binding DiscardAllCommand}">Discard all</Button>
+                <Button Command="{Binding OpenFolderCommand}">Open Folder</Button>
             </StackPanel>
 
             <!-- File tree view -->
@@ -97,7 +97,7 @@
                                                 CommandParameter="{Binding}"
                                                 Command="{Binding 
                                                     RelativeSource={ RelativeSource AncestorType=ItemsControl}, 
-                                                    Path=DataContext.RemoveComponent, FallbackValue={}
+                                                    Path=DataContext.RemoveComponentCommand, FallbackValue={}
                                                 }">
                                             </ia:InvokeCommandAction>
                                         </ia:EventTriggerBehavior>
@@ -109,18 +109,18 @@
                 </ScrollViewer>
 
                 <!-- Clear current components button-->
-                <Button Grid.Row="0" Grid.Column="1" Command="{Binding ClearNewName}" Content="x" />
+                <Button Grid.Row="0" Grid.Column="1" Command="{Binding ClearNewNameCommand}" Content="x" />
 
                 <!-- Insert components buttons -->
                 <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,5" HorizontalAlignment="Center"
                             Orientation="Horizontal"
                             Spacing="8">
                     <TextBlock VerticalAlignment="Center">Insert:</TextBlock>
-                    <Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
-                    <Button Command="{Binding AddCurrentFilename}">Current filename</Button>
+                    <Button Command="{Binding AddLastModifiedDateCommand}">Last modified date</Button>
+                    <Button Command="{Binding AddCurrentFilenameCommand}">Current filename</Button>
                     <TextBlock VerticalAlignment="Center">Custom text:</TextBlock>
                     <TextBox Text="{Binding CustomTextBox}"></TextBox>
-                    <Button Command="{Binding AddCustomText}">Add text</Button>
+                    <Button Command="{Binding AddCustomTextCommand}">Add text</Button>
                 </StackPanel>
             </Grid>
 
@@ -128,7 +128,7 @@
             <DockPanel DockPanel.Dock="Bottom" Margin="5" VerticalAlignment="Bottom">
                 <Button DockPanel.Dock="Right"
                         IsEnabled="{Binding !CurrentlyWorking}"
-                        Command="{Binding ApplyButtonClick}"
+                        Command="{Binding StartRenamingCommand}"
                         Content="Apply" />
                 <ProgressBar Margin="5" IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
             </DockPanel>

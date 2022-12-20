@@ -8,6 +8,7 @@ using FilenameRenamer.Views;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 
 namespace FilenameRenamer.ViewModels;
 
@@ -28,12 +29,14 @@ public partial class MainWindowViewModel : ObservableObject
     public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new() { new CurrentName() };
 
     [ObservableProperty] private string _customTextBox = "";
-    
+
     [ObservableProperty] private object? _selectedObject;
 
     [ObservableProperty] private bool _currentlyWorking;
 
-    public async Task OpenFolder()
+
+    [RelayCommand]
+    async Task OpenFolder()
     {
         var dialog = new OpenFolderDialog();
         var result = await dialog.ShowAsync(new MainWindow());
@@ -44,7 +47,8 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    public async Task SelectFile()
+    [RelayCommand]
+    async Task SelectFile()
     {
         var dialog = new OpenFileDialog();
         var result = await dialog.ShowAsync(new MainWindow());
@@ -55,7 +59,8 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    public void ApplyButtonClick() => Task.Run(() =>
+    [RelayCommand]
+    void StartRenaming() => Task.Run(() =>
     {
         CurrentlyWorking = true;
         renameService.ExecuteRename(ComponentItems, fileHandler.DirectoryItems);
@@ -63,7 +68,8 @@ public partial class MainWindowViewModel : ObservableObject
         // Update names in list after rename or discard?
     });
 
-    public void RemoveComponent(object? component)
+    [RelayCommand]
+    void RemoveComponent(object? component)
     {
         if (component is IComponentItem itemToRemove)
         {
@@ -71,7 +77,8 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    public void DiscardSelected()
+    [RelayCommand]
+    void DiscardSelected()
     {
         if (_selectedObject != null)
         {
@@ -80,13 +87,17 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     // Should the application prompt user first perhaps?
-    public void DiscardAll() => fileHandler.DirectoryItems.Clear();
+    [RelayCommand]
+    void DiscardAll() => fileHandler.DirectoryItems.Clear();
 
-    public void AddCurrentFilename() => ComponentItems.Add(new CurrentName());
+    [RelayCommand]
+    void AddCurrentFilename() => ComponentItems.Add(new CurrentName());
 
-    public void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
+    [RelayCommand]
+    void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
 
-    public void AddCustomText()
+    [RelayCommand]
+    void AddCustomText()
     {
         if (_customTextBox.Length != 0)
         {
@@ -94,5 +105,6 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    public void ClearNewName() => ComponentItems.Clear();
+    [RelayCommand]
+    void ClearNewName() => ComponentItems.Clear();
 }
