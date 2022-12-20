@@ -1,13 +1,14 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FilenameRenamer.Models;
 using FilenameRenamer.Models.Components;
 using FilenameRenamer.Models.Interfaces;
 using FilenameRenamer.Services;
-using FilenameRenamer.Views;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
 
 namespace FilenameRenamer.ViewModels;
@@ -36,26 +37,23 @@ public partial class MainWindowViewModel : ObservableObject
 
 
     [RelayCommand]
-    private async Task OpenFolder()
+    private async Task SelectFolder(Window window)
     {
-        var dialog = new OpenFolderDialog();
-        var result = await dialog.ShowAsync(new MainWindow());
-
-        if (result != null)
+        var folder = await window.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions());
+        if (folder[0].TryGetUri(out Uri? path))
         {
-            _fileHandler.AddNewDirectoryItem(new DirectoryInfo(@result));
+            _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.OriginalString));
         }
     }
 
     [RelayCommand]
-    private async Task SelectFile()
+    private async Task SelectFile(Window window)
     {
-        var dialog = new OpenFileDialog();
-        var result = await dialog.ShowAsync(new MainWindow());
+        var file = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions());
 
-        if (result != null)
+        if (file[0].TryGetUri(out Uri? path))
         {
-            _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(result[0]));
+            _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.OriginalString));
         }
     }
 
