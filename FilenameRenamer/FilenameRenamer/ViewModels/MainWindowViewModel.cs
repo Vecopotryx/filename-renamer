@@ -47,13 +47,16 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SelectFile(Window window)
+    private async Task SelectFiles(Window window)
     {
-        var file = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions());
-
-        if (file[0].TryGetUri(out Uri? path))
+        var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+            { AllowMultiple = true });
+        foreach (var file in files)
         {
-            _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.OriginalString));
+            if (file.TryGetUri(out Uri? path))
+            {
+                _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.OriginalString));
+            }
         }
     }
 
