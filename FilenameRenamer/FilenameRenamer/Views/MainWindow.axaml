@@ -5,40 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:FilenameRenamer.Models"
         xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
-	    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-		xmlns:id="clr-namespace:Avalonia.Xaml.Interactions.Draggable;assembly=Avalonia.Xaml.Interactions"
-        xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions.Custom"
-        xmlns:components="clr-namespace:FilenameRenamer.Views.Components"
+        xmlns:id="clr-namespace:Avalonia.Xaml.Interactions.Draggable;assembly=Avalonia.Xaml.Interactions"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FilenameRenamer.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Filename Renamer"
         Background="Transparent"
-        TransparencyLevelHint="AcrylicBlur"
-        >
-	<Window.Styles>
-		<StyleInclude Source="avares://Avalonia.Xaml.Interactions/Draggable/Styles.axaml" />
-	</Window.Styles>
-	
+        TransparencyLevelHint="AcrylicBlur">
+
+    <Window.Styles>
+        <StyleInclude Source="avares://Avalonia.Xaml.Interactions/Draggable/Styles.axaml" />
+    </Window.Styles>
+
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-			<ColumnDefinition Width="1*" />
-			<ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
-		
-		<DockPanel Grid.Column="0" Background="#60292f2f">
-            <StackPanel Margin="5" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
-                    <Button Command="{Binding SelectFile}">+</Button>
-                    <Button Command="{Binding DiscardSelected}">-</Button>
-                    <Button Command="{Binding DiscardAll}">Discard all</Button>
-                    <Button Command="{Binding OpenFolder}">Open Folder</Button>
+
+    <Grid ColumnDefinitions="*, 3*">
+        <!-- File selection part -->
+        <DockPanel Grid.Column="0" Background="#60292F2F">
+            <!-- File selection control buttons -->
+            <StackPanel Margin="5" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Orientation="Horizontal"
+                        Spacing="8">
+                <Button Command="{Binding SelectFile}">+</Button>
+                <Button Command="{Binding DiscardSelected}">-</Button>
+                <Button Command="{Binding DiscardAll}">Discard all</Button>
+                <Button Command="{Binding OpenFolder}">Open Folder</Button>
             </StackPanel>
-            <TreeView SelectedItem="{Binding SelectedObject}" Padding="8" Items="{Binding GraphicalFileList}">
-				<TreeView.KeyBindings>
+
+            <!-- File tree view -->
+            <TreeView SelectedItem="{Binding SelectedObject}" Padding="8"
+                      Items="{Binding GraphicalFileList}">
+                <TreeView.KeyBindings>
                     <KeyBinding Gesture="Delete" Command="{Binding DiscardSelected}" />
                 </TreeView.KeyBindings>
                 <TreeView.DataTemplates>
@@ -54,82 +54,71 @@
                 </TreeView.DataTemplates>
             </TreeView>
         </DockPanel>
-		
-		<DockPanel Grid.Column="1" Background="#60090f0f">
-			<DockPanel Margin="10" DockPanel.Dock="Top">
-                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch">
-                    <Button DockPanel.Dock="Right" Command="{Binding ClearNewName}" Content="x"/>
-					<ScrollViewer HorizontalScrollBarVisibility="Auto">
-						<Border CornerRadius="4" Background="#20ffffff">
-					        <ItemsControl Items="{Binding ComponentItems}">
-								<ItemsControl.Styles>
-									<Style Selector=":is(ItemsControl) > :is(ContentPresenter)">
-										<Setter Property="(i:Interaction.Behaviors)">
-											<i:BehaviorCollectionTemplate>
-												<i:BehaviorCollection>
-													<id:ItemDragBehavior  />
-												</i:BehaviorCollection>
-											</i:BehaviorCollectionTemplate>
-										</Setter>
-									</Style>
 
-								</ItemsControl.Styles>
-						        <ItemsControl.ItemsPanel>
-							        <ItemsPanelTemplate>
-								        <StackPanel Orientation="Horizontal" Spacing="4" />
-							        </ItemsPanelTemplate>
-						        </ItemsControl.ItemsPanel>
-						        <ItemsControl.ItemTemplate>
-							        <DataTemplate>
-										<Panel>
-											<Button Content="{Binding TextContent}"></Button>
-											<!--Drag to remove?-->
-											<i:Interaction.Behaviors>
-												<ia:EventTriggerBehavior EventName="DoubleTapped">
-													<ia:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveComponent}" CommandParameter="{Binding}" />
-												</ia:EventTriggerBehavior>
-											</i:Interaction.Behaviors>
-										</Panel>
-									</DataTemplate>
-                                </ItemsControl.ItemTemplate>
-					        </ItemsControl>
-					    </Border>
-					</ScrollViewer>
-				</DockPanel>
-				<DockPanel>
-					<StackPanel DockPanel.Dock="Left" Margin="0,5" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="8">
-						<TextBlock VerticalAlignment="Center">Insert:</TextBlock>
-						<Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
-						<Button Command="{Binding AddCurrentFilename}">Current filename</Button>
-					</StackPanel>
-					<StackPanel DockPanel.Dock="Right" Margin="0,5" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
-						<TextBlock VerticalAlignment="Center">Custom text:</TextBlock>
-						<TextBox Text="{Binding CustomTextBox}"></TextBox>
-						<Button Command="{Binding AddCustomText}">Add text</Button>
-					</StackPanel>
-				</DockPanel>
-				
-			</DockPanel>
-				
-			<DockPanel Margin="5" DockPanel.Dock="Bottom">
+        <!-- Main control part -->
+        <DockPanel Grid.Column="1" Background="#60090F0F">
+            <Grid DockPanel.Dock="Top" RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,Auto" Margin="5">
+                <!-- Name component draggable list -->
+                <ScrollViewer Grid.Row="0" Grid.Column="0" HorizontalScrollBarVisibility="Auto">
+                    <ScrollViewer.Styles>
+                        <Style Selector="ScrollViewer">
+                            <Setter Property="Background" Value="#20FFFFFF"></Setter>
+                            <Setter Property="CornerRadius" Value="4"></Setter>
+                        </Style>
+                    </ScrollViewer.Styles>
+
+                    <ItemsControl Items="{Binding ComponentItems}">
+                        <ItemsControl.Styles>
+                            <Style Selector=":is(ItemsControl) > :is(ContentPresenter)">
+                                <!-- Make items draggable -->
+                                <Setter Property="(i:Interaction.Behaviors)">
+                                    <i:BehaviorCollectionTemplate>
+                                        <i:BehaviorCollection>
+                                            <id:ItemDragBehavior />
+                                        </i:BehaviorCollection>
+                                    </i:BehaviorCollectionTemplate>
+                                </Setter>
+                            </Style>
+                        </ItemsControl.Styles>
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding TextContent}"></Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Clear current components button-->
+                <Button Grid.Row="0" Grid.Column="1" Command="{Binding ClearNewName}" Content="x" />
+
+                <!-- Insert components buttons -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,5" HorizontalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
+                    <TextBlock VerticalAlignment="Center">Insert:</TextBlock>
+                    <Button Command="{Binding AddLastModifiedDate}">Last modified date</Button>
+                    <Button Command="{Binding AddCurrentFilename}">Current filename</Button>
+                    <TextBlock VerticalAlignment="Center">Custom text:</TextBlock>
+                    <TextBox Text="{Binding CustomTextBox}"></TextBox>
+                    <Button Command="{Binding AddCustomText}">Add text</Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Apply button and working indicator -->
+            <DockPanel DockPanel.Dock="Bottom" Margin="5" VerticalAlignment="Bottom">
                 <Button DockPanel.Dock="Right"
                         IsEnabled="{Binding !CurrentlyWorking}"
                         Command="{Binding ApplyButtonClick}"
-                        Content="Apply"/>
+                        Content="Apply" />
                 <ProgressBar Margin="5" IsIndeterminate="True" IsVisible="{Binding CurrentlyWorking}"></ProgressBar>
             </DockPanel>
-			
-			<StackPanel Margin="10" Orientation="Vertical" Spacing="8">
-				<CheckBox IsChecked="{Binding FindAndReplaceOn}">Find and replace</CheckBox>
-				<DockPanel IsVisible="{Binding FindAndReplaceOn}">
-					<TextBlock DockPanel.Dock="Top">Temporarily removed find and replace functionality. Will be implemented in a better way soon</TextBlock>
-					<Grid ColumnDefinitions="1*,Auto,1*">
-						<TextBox Grid.Column="0" Watermark="Find"></TextBox>
-						<TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">=></TextBlock>
-						<TextBox Grid.Column="2" DockPanel.Dock="Right" Watermark="Replace With"></TextBox>
-					</Grid>
-				</DockPanel>
-            </StackPanel>			
         </DockPanel>
     </Grid>
 </Window>
