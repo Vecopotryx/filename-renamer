@@ -20,7 +20,7 @@ using FilenameRenamer.Models.Components;
 
 namespace FilenameRenamer.ViewModels
 {
-    public class MainWindowViewModel : ReactiveObject
+    public class MainWindowViewModel : ViewModelBase
     {
         // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm?
         // Maybe add option to change folder names?
