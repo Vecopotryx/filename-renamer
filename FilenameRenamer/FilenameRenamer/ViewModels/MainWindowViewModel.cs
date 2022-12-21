@@ -39,21 +39,25 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task SelectFolder(Window window)
     {
-        var folder = await window.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions());
-        if (folder[0].TryGetUri(out Uri? path))
+        var options = new FolderPickerOpenOptions() { AllowMultiple = true };
+        var folders = await window.StorageProvider.OpenFolderPickerAsync(options);
+        foreach (var folder in folders)
         {
-            _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.OriginalString));
+            if (folder.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
+            {
+                _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.OriginalString));
+            }
         }
     }
 
     [RelayCommand]
     private async Task SelectFiles(Window window)
     {
-        var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
-            { AllowMultiple = true });
+        var options = new FilePickerOpenOptions() { AllowMultiple = true };
+        var files = await window.StorageProvider.OpenFilePickerAsync(options);
         foreach (var file in files)
         {
-            if (file.TryGetUri(out Uri? path))
+            if (file.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
             {
                 _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.OriginalString));
             }
