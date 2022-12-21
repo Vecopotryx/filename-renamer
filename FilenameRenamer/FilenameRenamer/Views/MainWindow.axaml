@@ -61,7 +61,7 @@
                         </StackPanel>
                     </TreeDataTemplate>
                     <DataTemplate DataType="io:FileInfo">
-                        <TextBlock Text="{Binding Name}"></TextBlock>
+                        <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding FullName}"></TextBlock>
                     </DataTemplate>
                 </TreeView.DataTemplates>
             </TreeView>
