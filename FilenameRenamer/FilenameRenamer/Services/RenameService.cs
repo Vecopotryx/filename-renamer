@@ -14,6 +14,7 @@ namespace FilenameRenamer.Services
         public void ExecuteRename(ObservableCollection<IComponentItem> componentItems,
             IEnumerable<DirectoryItem> directoryItems)
         {
+            if (componentItems.Count == 0) return;
             foreach (var directory in directoryItems)
             {
                 if (directory.FileInfos.Count <= 0) continue;
