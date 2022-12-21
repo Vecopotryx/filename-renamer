@@ -45,7 +45,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             if (folder.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
             {
-                _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.OriginalString));
+                _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.AbsolutePath));
             }
         }
     }
@@ -59,7 +59,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             if (file.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
             {
-                _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.OriginalString));
+                _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.AbsolutePath));
             }
         }
     }
