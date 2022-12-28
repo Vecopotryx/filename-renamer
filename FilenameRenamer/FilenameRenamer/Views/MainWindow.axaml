@@ -36,8 +36,8 @@
                             }}">
                     +
                 </Button>
-                <Button Command="{Binding DiscardSelectedCommand}">-</Button>
-                <Button Command="{Binding DiscardAllCommand}">Discard all</Button>
+                <Button HotKey="Delete" Command="{Binding DiscardSelectedCommand}">-</Button>
+                <Button HotKey="Ctrl+Delete" Command="{Binding DiscardAllCommand}">Discard all</Button>
                 <Button Command="{Binding SelectFolderCommand}"
                         CommandParameter="{Binding RelativeSource={
                                 RelativeSource Mode=FindAncestor, 
@@ -49,10 +49,7 @@
 
             <!-- File tree view -->
             <TreeView SelectedItem="{Binding SelectedObject}" Padding="8"
-                      Items="{Binding GraphicalFileList}">
-                <TreeView.KeyBindings>
-                    <KeyBinding Gesture="Delete" Command="{Binding DiscardSelected}" />
-                </TreeView.KeyBindings>
+                      Items="{Binding GraphicalFileList}" SelectionMode="Toggle">
                 <TreeView.DataTemplates>
                     <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
                         <StackPanel Orientation="Horizontal">
