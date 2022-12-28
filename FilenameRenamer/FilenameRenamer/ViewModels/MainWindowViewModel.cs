@@ -32,8 +32,6 @@ public partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private string _customTextBox = "";
 
-    [ObservableProperty] private object? _selectedObject;
-
     [ObservableProperty] private bool _currentlyWorking;
 
     public void HandleDroppedFiles(IEnumerable<string>? paths)
@@ -99,11 +97,11 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void DiscardSelected()
+    private void DiscardSelected(object? selectedObject)
     {
-        if (_selectedObject != null)
+        if (selectedObject != null)
         {
-            _fileHandler.RemoveFromList(_selectedObject);
+            _fileHandler.RemoveFromList(selectedObject);
         }
     }
 
