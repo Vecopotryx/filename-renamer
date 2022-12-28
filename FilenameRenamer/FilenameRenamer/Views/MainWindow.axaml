@@ -23,7 +23,7 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="*, 3*">
+    <Grid ColumnDefinitions="*, 3*" DragDrop.AllowDrop="True">
         <!-- File selection part -->
         <DockPanel Grid.Column="0" Background="#60292F2F">
             <!-- File selection control buttons -->

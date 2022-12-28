@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FilenameRenamer.Models;
@@ -35,6 +36,21 @@ public partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private bool _currentlyWorking;
 
+    public void HandleDroppedFiles(IEnumerable<string>? paths)
+    {
+        if (paths == null) return;
+        foreach (var path in paths)
+        {
+            if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
+            {
+                _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path));
+            }
+            else
+            {
+                _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path));
+            }
+        }
+    }
 
     [RelayCommand]
     private async Task SelectFolder(Window window)
