@@ -29,9 +29,7 @@ public partial class MainWindowViewModel : ObservableObject
     }
 
     public ObservableCollection<IComponentItem> ComponentItems { get; set; } = new() { new CurrentName() };
-
-    [ObservableProperty] private string _customTextBox = "";
-
+    
     [ObservableProperty] private bool _currentlyWorking;
 
     public void HandleDroppedFiles(IEnumerable<string>? paths)
@@ -116,11 +114,11 @@ public partial class MainWindowViewModel : ObservableObject
     private void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
 
     [RelayCommand]
-    private void AddCustomText()
+    private void AddCustomText(string text)
     {
-        if (_customTextBox.Length != 0)
+        if (text.Length != 0)
         {
-            ComponentItems.Add(new Text(_customTextBox));
+            ComponentItems.Add(new Text(text));
         }
     }
 

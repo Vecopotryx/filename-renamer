@@ -130,8 +130,11 @@
                     <Button Command="{Binding AddLastModifiedDateCommand}">Last modified date</Button>
                     <Button Command="{Binding AddCurrentFilenameCommand}">Current filename</Button>
                     <TextBlock VerticalAlignment="Center">Custom text:</TextBlock>
-                    <TextBox Text="{Binding CustomTextBox}"></TextBox>
-                    <Button Command="{Binding AddCustomTextCommand}">Add text</Button>
+                    <TextBox x:Name="CustomTextBox"></TextBox>
+                    <Button Command="{Binding AddCustomTextCommand}"
+                            CommandParameter="{Binding #CustomTextBox.Text}">
+                        Add text
+                    </Button>
                 </StackPanel>
             </Grid>
 
