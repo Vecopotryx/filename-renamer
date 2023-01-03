@@ -127,7 +127,16 @@
                             Orientation="Horizontal"
                             Spacing="8">
                     <TextBlock VerticalAlignment="Center">Insert:</TextBlock>
-                    <Button Command="{Binding AddLastModifiedDateCommand}">Last modified date</Button>
+                    <Button Content="Last modified date">
+                        <Button.Flyout>
+                            <Flyout Placement="Bottom">
+                                <StackPanel>
+                                    <Button Command="{Binding AddLastModifiedDateCommand}" CommandParameter="yyyy-MM-dd">yyyy-MM-dd</Button>
+                                    <Button Command="{Binding AddLastModifiedDateCommand}" CommandParameter="HH-mm-ss">HH-mm-ss</Button>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                     <Button Command="{Binding AddCurrentFilenameCommand}">Current filename</Button>
                     <TextBlock VerticalAlignment="Center">Custom text:</TextBlock>
                     <TextBox x:Name="CustomTextBox"></TextBox>

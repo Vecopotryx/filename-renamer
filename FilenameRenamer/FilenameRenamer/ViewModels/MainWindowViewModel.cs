@@ -111,7 +111,7 @@ public partial class MainWindowViewModel : ObservableObject
     private void AddCurrentFilename() => ComponentItems.Add(new CurrentName());
 
     [RelayCommand]
-    private void AddLastModifiedDate() => ComponentItems.Add(new FileDate());
+    private void AddLastModifiedDate(string format) => ComponentItems.Add(new FileDate(format));
 
     [RelayCommand]
     private void AddCustomText(string text)
