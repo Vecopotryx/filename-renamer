@@ -1,13 +1,13 @@
 using System;
-using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using FilenameRenamer.ViewModels;
 
 namespace FilenameRenamer;
 
 public class ViewLocator : IDataTemplate
 {
-    public IControl Build(object data)
+    public Control Build(object data)
     {
         var name = data.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
@@ -22,7 +22,6 @@ public class ViewLocator : IDataTemplate
 
     public bool Match(object data)
     {
-
-        return data is INotifyPropertyChanged;
+        return data is ViewModelBase;
     }
 }

@@ -14,7 +14,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace FilenameRenamer.ViewModels;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ViewModelBase
 {
     // Add graphical preview window that shows a list of files that are about to be renamed with an arrow pointing to new name and then prompts user to confirm?
     // Maybe add option to change folder names?
@@ -55,10 +55,10 @@ public partial class MainWindowViewModel : ObservableObject
         var folders = await window.StorageProvider.OpenFolderPickerAsync(options);
         foreach (var folder in folders)
         {
-            if (folder.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
-            {
-                _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.LocalPath));
-            }
+            // if (folder.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
+            // {
+            //     _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.LocalPath));
+            // }
         }
     }
 
@@ -69,10 +69,10 @@ public partial class MainWindowViewModel : ObservableObject
         var files = await window.StorageProvider.OpenFilePickerAsync(options);
         foreach (var file in files)
         {
-            if (file.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
-            {
-                _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.LocalPath));
-            }
+            // if (file.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
+            // {
+            //     _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.LocalPath));
+            // }
         }
     }
 
