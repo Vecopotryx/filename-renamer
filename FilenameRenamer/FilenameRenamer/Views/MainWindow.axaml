@@ -98,12 +98,10 @@
                                     <i:Interaction.Behaviors>
                                         <!-- Double click to remove -->
                                         <ia:EventTriggerBehavior EventName="DoubleTapped">
-                                            <ia:InvokeCommandAction>
-                                                <!-- CommandParameter="{Binding}" -->
-                                                <!-- Command="{Binding  -->
-                                                <!--     RelativeSource={ RelativeSource AncestorType=ItemsControl},  -->
-                                                <!--     Path=DataContext.RemoveComponentCommand, FallbackValue={} -->
-                                                <!-- }"> -->
+                                            <ia:InvokeCommandAction
+                                                CommandParameter="{Binding}"
+                                                x:CompileBindings="False"
+                                                Command="{Binding $parent[ItemsControl].DataContext.RemoveComponentCommand}">
                                             </ia:InvokeCommandAction>
                                         </ia:EventTriggerBehavior>
                                     </i:Interaction.Behaviors>
