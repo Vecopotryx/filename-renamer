@@ -56,10 +56,10 @@ public partial class MainWindowViewModel : ViewModelBase
         var folders = await window.StorageProvider.OpenFolderPickerAsync(options);
         foreach (var folder in folders)
         {
-            // if (folder.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
-            // {
-            //     _fileHandler.AddNewDirectoryItem(new DirectoryInfo(path.LocalPath));
-            // }
+            if (folder.Path.IsAbsoluteUri)
+            {
+                 _fileHandler.AddNewDirectoryItem(new DirectoryInfo(folder.Path.LocalPath));
+            }
         }
     }
 
@@ -71,10 +71,10 @@ public partial class MainWindowViewModel : ViewModelBase
         var files = await window.StorageProvider.OpenFilePickerAsync(options);
         foreach (var file in files)
         {
-            // if (file.TryGetUri(out Uri? path) && path.IsAbsoluteUri)
-            // {
-            //     _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(path.LocalPath));
-            // }
+            if (file.Path.IsAbsoluteUri)
+            {
+                 _fileHandler.AddSingleFileToDirectoryItems(new FileInfo(file.Path.LocalPath));
+            }
         }
     }
 
