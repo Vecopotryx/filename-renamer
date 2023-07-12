@@ -49,9 +49,10 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task SelectFolder(Window window)
+    private async Task SelectFolder(/*Window window*/)
     {
         var options = new FolderPickerOpenOptions() { AllowMultiple = true };
+        var window = new Window(); // Not ideal to create new Window here. Fix later
         var folders = await window.StorageProvider.OpenFolderPickerAsync(options);
         foreach (var folder in folders)
         {
@@ -63,9 +64,10 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task SelectFiles(Window window)
+    private async Task SelectFiles(/*Window window*/)
     {
         var options = new FilePickerOpenOptions() { AllowMultiple = true };
+        var window = new Window(); // Not ideal to create new Window here. Fix later
         var files = await window.StorageProvider.OpenFilePickerAsync(options);
         foreach (var file in files)
         {
