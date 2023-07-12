@@ -12,10 +12,9 @@
         x:Class="FilenameRenamer.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Filename Renamer">
-        <!-- Temporarily disabled because font looks blurry after updating to Avalonia 11:  -->
-        <!-- Background="Transparent" -->
-        <!-- TransparencyLevelHint="AcrylicBlur"> -->
+        Title="Filename Renamer"
+        Background="#7F000000"
+        TransparencyLevelHint="AcrylicBlur">
 
     <Window.Styles>
         <!-- <StyleInclude Source="avares://Avalonia.Xaml.Interactions/Draggable/Styles.axaml" /> -->
