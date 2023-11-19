@@ -8,5 +8,7 @@ namespace FilenameRenamer.Models
     {
         public ObservableCollection<FileInfo> FileInfos { get; set; }
         public string DirectoryName { get; set; }
+        
+        public string FullPath { get; set; }
     }
 }

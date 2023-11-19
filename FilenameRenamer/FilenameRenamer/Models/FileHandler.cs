@@ -14,6 +14,7 @@ namespace FilenameRenamer.Models
             DirectoryItems.Add(new DirectoryItem
             {
                 DirectoryName = directoryInfo.Name,
+                FullPath = directoryInfo.FullName,
                 FileInfos = new ObservableCollection<FileInfo>(new List<FileInfo>(directoryInfo.GetFiles()
                     .Where(file => (file.Attributes & FileAttributes.Hidden) == 0)))
             });
