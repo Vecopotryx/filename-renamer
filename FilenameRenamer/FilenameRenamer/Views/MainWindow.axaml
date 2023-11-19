@@ -44,13 +44,21 @@
             </StackPanel>
 
             <!-- File tree view -->
-            <TreeView x:Name="FileTreeView" Padding="8" ItemsSource="{Binding GraphicalFileList}" SelectionMode="Toggle">
+            <TreeView x:Name="FileTreeView" Padding="8" ItemsSource="{Binding GraphicalFileList}"
+                      SelectionMode="Toggle">
                 <TreeView.DataTemplates>
                     <TreeDataTemplate DataType="models:DirectoryItem" ItemsSource="{Binding FileInfos}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding DirectoryName}"></TextBlock>
-                            <TextBlock Text="{Binding FileInfos.Count, StringFormat=' ({0} files)'}"></TextBlock>
-                        </StackPanel>
+                        <Grid RowDefinitions="Auto,Auto" ToolTip.Tip="{Binding FullPath}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DirectoryName}"></TextBlock>
+                                <TextBlock Text="{Binding FileInfos.Count, StringFormat=' ({0} files)'}"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Row="1"
+                                       MaxWidth="{Binding Bounds.Width, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                                       FontSize="10" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"
+                                       Text="{Binding FullPath}">
+                            </TextBlock>
+                        </Grid>
                     </TreeDataTemplate>
                     <DataTemplate DataType="io:FileInfo">
                         <TextBlock Text="{Binding Name}" ToolTip.Tip="{Binding FullName}"></TextBlock>
@@ -122,7 +130,10 @@
                         <Button.Flyout>
                             <Flyout Placement="Bottom">
                                 <StackPanel>
-                                    <Button Command="{Binding AddLastModifiedDateCommand}" CommandParameter="yyyy-MM-dd">yyyy-MM-dd</Button>
+                                    <Button Command="{Binding AddLastModifiedDateCommand}"
+                                            CommandParameter="yyyy-MM-dd">
+                                        yyyy-MM-dd
+                                    </Button>
                                     <Button Command="{Binding AddLastModifiedDateCommand}" CommandParameter="HH-mm-ss">HH-mm-ss</Button>
                                 </StackPanel>
                             </Flyout>
